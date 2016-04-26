@@ -1,25 +1,84 @@
 package com.jaregames.futuretd.client;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
+import java.awt.Canvas;
+import java.awt.Frame;
+import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Window;
+import java.awt.image.BufferStrategy;
 
 /**
  * Created by René on 26.04.2016.
  */
 class GameWindow {
     private JFrame gameWindow;
-    private JPanel gamePanel;
+    private Canvas canvas;
+    private testObj test;
+    private GameMap gameMap;
+
+    private boolean running;
+    private BufferStrategy bufferStrategy;
+
+    GraphicsDevice myDevice;
+
     GameWindow() {
-        gamePanel = new JPanel();
-        gamePanel.setSize(1000, 800);
-        gamePanel.setVisible(true);
+        test = new testObj();
+
+        gameMap = new GameMap();
+
+        running = true;
+
+        myDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+        canvas = new Canvas();
+        canvas.setVisible(true);
 
         gameWindow = new JFrame("FutureTD");
-        gameWindow.setSize(1000, 800);
-        gameWindow.setLocationRelativeTo(null);
-        gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        gameWindow.add(gamePanel);
-        gameWindow.setVisible(true);
+        gameWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
+        gameWindow.setUndecorated(true);
+        gameWindow.add(canvas);
+        canvas.setSize(gameWindow.getSize());
+
+        Window w = gameWindow;
+
+
+
+        try {
+            myDevice.setFullScreenWindow(w);
+        } finally {
+            //myDevice.setFullScreenWindow(null);
+        }
+
+        gameLoop();
+    }
+
+
+
+    private void gameLoop(){
+        while(running){
+            update();
+            render();
+        }
+    }
+
+    private void update(){
+
+    }
+
+    private void render(){
+        if (bufferStrategy == null) {
+            canvas.createBufferStrategy(2);
+            bufferStrategy = canvas.getBufferStrategy();
+        }
+        Graphics2D g2d = (Graphics2D) bufferStrategy.getDrawGraphics();
+
+        g2d.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
+        g2d.fillRect((int)1, 10, 100, 100);
+        test.render(g2d);
+        gameMap.render(g2d);
+
+        bufferStrategy.show();
     }
 }
