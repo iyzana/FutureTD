@@ -19,10 +19,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="futuretd-client_main" target="1.5" />
-      <module name="futuretd-client_test" target="1.5" />
-      <module name="futuretd-server_main" target="1.5" />
-      <module name="futuretd-server_test" target="1.5" />
+      <module name="futuretd-client_main" target="1.8" />
+      <module name="futuretd-client_test" target="1.8" />
+      <module name="futuretd-server_main" target="1.8" />
+      <module name="futuretd-server_test" target="1.8" />
       <module name="futuretd_main" target="1.5" />
       <module name="futuretd_test" target="1.5" />
     </bytecodeTargetLevel>
