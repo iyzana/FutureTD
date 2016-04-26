@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../untitled/.idea/modules/futuretd-client.iml" filepath="$PROJECT_DIR$/../untitled/.idea/modules/futuretd-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/futuretd-client_main.iml" filepath="$PROJECT_DIR$/.idea/modules/futuretd-client_main.iml" group="futuretd-client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/futuretd-client_test.iml" filepath="$PROJECT_DIR$/.idea/modules/futuretd-client_test.iml" group="futuretd-client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/futuretd-server.iml" filepath="$PROJECT_DIR$/.idea/modules/futuretd-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/futuretd-server_main.iml" filepath="$PROJECT_DIR$/.idea/modules/futuretd-server_main.iml" group="futuretd-server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/futuretd-server_test.iml" filepath="$PROJECT_DIR$/.idea/modules/futuretd-server_test.iml" group="futuretd-server" />
+    </modules>
+  </component>
+</project>
