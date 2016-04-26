@@ -12,8 +12,6 @@
         </XML>
         <codeStyleSettings language="JAVA">
           <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
-          <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
-          <option name="IF_BRACE_FORCE" value="1" />
           <option name="DOWHILE_BRACE_FORCE" value="1" />
           <option name="WHILE_BRACE_FORCE" value="1" />
           <option name="ENUM_CONSTANTS_WRAP" value="2" />
