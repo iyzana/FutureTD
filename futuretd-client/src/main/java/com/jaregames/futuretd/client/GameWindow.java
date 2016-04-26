@@ -10,7 +10,11 @@ import java.awt.Window;
 import java.awt.image.BufferStrategy;
 
 /**
- * Created by René on 26.04.2016.
+ * Project: futuretd
+ * <p/>
+ * Created on 26.04.2016 at 21:44
+ *
+ * @author René
  */
 class GameWindow {
     private JFrame gameWindow;
