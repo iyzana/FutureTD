@@ -1,12 +1,12 @@
 package com.jaregames.futuretd.client;
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import java.awt.Canvas;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Window;
 import java.awt.image.BufferStrategy;
 
 /**
@@ -17,72 +17,68 @@ import java.awt.image.BufferStrategy;
  * @author René
  */
 class GameWindow {
-    private JFrame gameWindow;
     private Canvas canvas;
-    private testObj test;
+    private TestObj test;
     private GameMap gameMap;
-
+    
     private boolean running;
     private BufferStrategy bufferStrategy;
-
-    GraphicsDevice myDevice;
-
+    
     GameWindow() {
-        test = new testObj();
-
-        gameMap = new GameMap();
-
-        running = true;
-
-        myDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-
+        JFrame gameWindow = new JFrame("FutureTD");
+        
+        gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
         canvas = new Canvas();
-        canvas.setVisible(true);
-
-        gameWindow = new JFrame("FutureTD");
+        canvas.setFocusTraversalKeysEnabled(false);
+        
+        gameWindow.add(canvas);
+        gameWindow.requestFocus();
+        
         gameWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
         gameWindow.setUndecorated(true);
-        gameWindow.add(canvas);
-        canvas.setSize(gameWindow.getSize());
-
-        Window w = gameWindow;
-
-
-
-        try {
-            myDevice.setFullScreenWindow(w);
-        } finally {
-            //myDevice.setFullScreenWindow(null);
-        }
-
+        gameWindow.enableInputMethods(false);
+        
+        GraphicsDevice myDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        myDevice.setFullScreenWindow(gameWindow);
+        
         gameLoop();
     }
-
-
-
-    private void gameLoop(){
-        while(running){
+    
+    private void init() {
+        test = new TestObj();
+        gameMap = new GameMap();
+        
+        running = true;
+    }
+    
+    private void gameLoop() {
+        init();
+        
+        while (running) {
             update();
             render();
         }
     }
-
-    private void update(){
-
+    
+    private void update() {
+        
     }
-
-    private void render(){
+    
+    private void render() {
         if (bufferStrategy == null) {
             canvas.createBufferStrategy(2);
             bufferStrategy = canvas.getBufferStrategy();
         }
-        Graphics2D g2d = (Graphics2D) bufferStrategy.getDrawGraphics();
-
-        g2d.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-        g2d.fillRect((int)1, 10, 100, 100);
-        test.render(g2d);
-        gameMap.render(g2d);
-
+        
+        Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+    
+        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        g.fillRect(1, 10, 100, 100);
+        test.render(g);
+        gameMap.render(g);
+    
+        g.dispose();
         bufferStrategy.show();
     }
 }

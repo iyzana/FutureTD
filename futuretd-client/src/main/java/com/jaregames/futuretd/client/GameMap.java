@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
  */
 public class GameMap {
     BufferedImage[][] mapInChunks;
-
-
+    
+    
     public GameMap() {
         BufferedImage[] temp = ImageLoader.chunkify(ImageLoader.loadImage("chunkTest.png"), 6, 6);
         int counter = 0;
@@ -21,15 +21,15 @@ public class GameMap {
             }
         }
     }
-
+    
     public void update() {
-
+        
     }
-
-    public void render(Graphics2D g2d) {
+    
+    public void render(Graphics2D g) {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                g2d.drawImage(mapInChunks[i][j], (1920/6)*i, (1080/6)*j, null);
+                g.drawImage(mapInChunks[i][j], (1920 / 6) * i, (1080 / 6) * j, null);
             }
         }
     }

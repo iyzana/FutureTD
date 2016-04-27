@@ -67,14 +67,14 @@ public class Pathfinder {
         if (cache == null) cachedDistance.set(cache = new HashMap<>());
         if (!cache.containsKey(node)) {
             cache.put(node, ends.parallelStream()
-                    .mapToInt(n -> distance(n, node))
+                    .mapToInt(n -> manhattanDistance(n, node))
                     .min()
                     .orElseThrow(() -> new IllegalArgumentException("No end points supplied")));
         }
         return cache.get(node);
     }
     
-    private static int distance(Node node1, Node node2) {
+    private static int manhattanDistance(Node node1, Node node2) {
         return Math.abs(node1.getX() - node2.getX()) + Math.abs(node1.getY() - node2.getY());
     }
     
