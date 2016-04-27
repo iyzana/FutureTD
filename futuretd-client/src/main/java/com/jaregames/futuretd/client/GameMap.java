@@ -28,8 +28,8 @@ public class GameMap {
         }
     }
     
-    public void update() {
-        camera.update();
+    public void update(double delta) {
+        camera.update(delta);
     }
     
     public void render(Graphics2D g) {

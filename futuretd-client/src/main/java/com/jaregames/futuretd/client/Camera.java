@@ -24,18 +24,18 @@ public class Camera {
         y = 0;
     }
     
-    public void update() {
+    public void update(double delta) {
         if (KeyboardInput.keyDown(KeyEvent.VK_D)) {
-            x += 6;
+            x += 600 * delta;
         }
         if (KeyboardInput.keyDown(KeyEvent.VK_S)) {
-            y += 6;
+            y += 600 * delta;
         }
         if (KeyboardInput.keyDown(KeyEvent.VK_A)) {
-            x -= 6;
+            x -= 600 * delta;
         }
         if (KeyboardInput.keyDown(KeyEvent.VK_W)) {
-            y -= 6;
+            y -= 600 * delta;
         }
     }
 }
