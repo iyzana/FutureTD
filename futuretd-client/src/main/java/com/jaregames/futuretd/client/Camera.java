@@ -1,53 +1,41 @@
 package com.jaregames.futuretd.client;
 
+import lombok.Getter;
+
 import java.awt.event.KeyEvent;
 
 /**
- * Created by René on 26.04.2016.
+ * Project: futuretd
+ * <p/>
+ * Created on 26.04.2016 at 19:06
+ *
+ * @author René
  */
+@Getter
 public class Camera {
-    double x;
-    double y;
-
-
-    int width;
-    int height;
-
+    private double x;
+    private double y;
+    
+    private int width;
+    private int height;
+    
     public Camera() {
         x = 0;
         y = 0;
     }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-
+    
     public void update() {
-        if(KeyboardInput.keyDown(KeyEvent.VK_D)){
+        if (KeyboardInput.keyDown(KeyEvent.VK_D)) {
             x += 6;
         }
-        if(KeyboardInput.keyDown(KeyEvent.VK_S)){
+        if (KeyboardInput.keyDown(KeyEvent.VK_S)) {
             y += 6;
         }
-        if(KeyboardInput.keyDown(KeyEvent.VK_A)){
-            x-=6;
+        if (KeyboardInput.keyDown(KeyEvent.VK_A)) {
+            x -= 6;
         }
-        if(KeyboardInput.keyDown(KeyEvent.VK_W)){
-            y-=6;
+        if (KeyboardInput.keyDown(KeyEvent.VK_W)) {
+            y -= 6;
         }
-
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 }

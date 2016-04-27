@@ -6,7 +6,11 @@ import java.awt.image.BufferedImage;
 import static com.jaregames.futuretd.client.GameWindow.camera;
 
 /**
- * Created by René on 26.04.2016.
+ * Project: futuretd
+ * <p/>
+ * Created on 26.04.2016 at 19:06
+ *
+ * @author René
  */
 public class GameMap {
     BufferedImage[][] mapInChunks;

@@ -20,7 +20,7 @@ class GameWindow {
     private Canvas canvas;
     private GameMap gameMap;
     static Camera camera;
-    KeyboardInput keyboardInput;
+    private KeyboardInput keyboardInput;
 
     private boolean running;
     private BufferStrategy bufferStrategy;

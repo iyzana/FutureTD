@@ -5,7 +5,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
- * Created by René on 26.04.2016.
+ * Project: futuretd
+ * <p/>
+ * Created on 26.04.2016 at 19:06
+ *
+ * @author René
  */
 public class ImageLoader {
     public static BufferedImage loadImage(String name) {
