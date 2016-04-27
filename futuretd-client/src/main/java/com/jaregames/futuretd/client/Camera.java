@@ -1,25 +1,53 @@
 package com.jaregames.futuretd.client;
 
+import java.awt.event.KeyEvent;
+
 /**
  * Created by René on 26.04.2016.
  */
 public class Camera {
-    int x;
-    int y;
+    double x;
+    double y;
 
-    public Camera(int x) {
-        this.x = x;
+
+    int width;
+    int height;
+
+    public Camera() {
+        x = 0;
+        y = 0;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void update(){
 
+    public void update() {
+        if(KeyboardInput.keyDown(KeyEvent.VK_D)){
+            x += 6;
+        }
+        if(KeyboardInput.keyDown(KeyEvent.VK_S)){
+            y += 6;
+        }
+        if(KeyboardInput.keyDown(KeyEvent.VK_A)){
+            x-=6;
+        }
+        if(KeyboardInput.keyDown(KeyEvent.VK_W)){
+            y-=6;
+        }
+
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }
