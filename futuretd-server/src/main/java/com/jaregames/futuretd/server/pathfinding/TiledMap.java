@@ -12,12 +12,12 @@ public interface TiledMap {
      * Returns the node at the given location.
      * This method should not do calculations as it is heavily used
      * during pathfinding and its performance is therefore critical.
-     * 
+     *
      * @param x The x coordinate
      * @param y The y coordinate
      * @return The Node at the given location
      */
-    Node getNodeAt(int x, int y);
+    TraversableNode getNodeAt(int x, int y);
     
     /**
      * @return The rightmost node x coordinate available on this map

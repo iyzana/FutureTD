@@ -48,15 +48,19 @@ public class Pathfinder {
      * @throws NoPathFoundException If a path cannot or cannot be found in a reasonable amount of time
      */
     public static List<Node> findPath(TiledMap map, Node start, List<Node> ends) throws NoPathFoundException {
-        cachedDistances.set(null);
+        cachedDistances.set(null); // Reset the cache from last pathfinding
+        
+        if (ends.isEmpty()) throw new NoPathFoundException("No end points supplied");
+        if (!(ends.get(0) instanceof SimpleNode))
+            ends = ends.parallelStream().map(SimpleNode::of).collect(Collectors.toList());
         
         Queue<PathNode> open = new PriorityQueue<>(100, comparatorFor(ends)); // Get a queue sorted by heuristic
         Set<Node> closed = new HashSet<>();
         
         open.add(PathNode.of(start)); // Start searching from the start ode
         
-        int maxDistance = map.getWidth() + map.getHeight();
-        int minDistance = maxDistance; // Save the nearest we've come to the end so far
+        int minDistance = (map.getWidth() + map.getHeight()) * 2; // Save the nearest we've come to the end so far
+        int maxDistance = minDistance / 20;
         
         while (!open.isEmpty()) { // While nodes to check are available
             PathNode current = open.poll();
@@ -65,12 +69,12 @@ public class Pathfinder {
             if (ends.contains(current)) return backtrack(current);
             
             int distance = distanceToAny(current, ends); // Get the distance to the current node
-            if (distance < minDistance) minDistance = distance; // Alter min distance if neccesarry
-            else if (distance > minDistance * (maxDistance / 5)) // If distance is far greater stop searching
+            if (distance < minDistance) minDistance = distance; // Alter min distance if necessary
+            else if (distance > minDistance * maxDistance) // If distance is far greater stop searching
                 throw new NoPathFoundException("No easy path between start and end");
             
             List<PathNode> neighbors = neighbors(map, current) // Build the neighbors
-                    .parallelStream()
+                    .stream()
                     .filter(node -> !closed.contains(node)) // Filter already visited nodes
                     .map(node -> PathNode.of(node, current)) // Map them to PathNodes
                     .collect(Collectors.toList());
@@ -168,7 +172,7 @@ public class Pathfinder {
                         if (!map.getNodeAt(cx, y).isTraversable()) continue;
                         if (!map.getNodeAt(x, cy).isTraversable()) continue;
                     }
-                    neighbors.add(new Node(cx, cy));
+                    neighbors.add(SimpleNode.of(cx, cy));
                 }
             }
         }

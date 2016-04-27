@@ -7,8 +7,6 @@ package com.jaregames.futuretd.server.pathfinding;
  *
  * @author Jannis
  */
-interface Node {
-    int getX();
-    
-    int getY();
+public interface TraversableNode extends Node {
+    boolean isTraversable();
 }

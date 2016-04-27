@@ -1,7 +1,6 @@
 package com.jaregames.futuretd.server.pathfinding;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Project: futuretd
@@ -10,17 +9,16 @@ import lombok.Setter;
  *
  * @author Jannis
  */
-class PathNode extends Node {
-    @Getter
-    @Setter
+@Getter
+class PathNode extends SimpleNode {
     private PathNode parent;
     private float steps = -1;
     
     /**
      * A node representing data neccesarry for a* pathfinding
-     * 
-     * @param x The nodes x coordinate
-     * @param y The nodes y coordinat
+     *
+     * @param x      The nodes x coordinate
+     * @param y      The nodes y coordinat
      * @param parent The nodes parent or predecessor
      */
     private PathNode(int x, int y, PathNode parent) {
@@ -38,11 +36,19 @@ class PathNode extends Node {
         return steps = parent.getSteps() + weight;
     }
     
+    static PathNode of(int x, int y) {
+        return of(x, y, null);
+    }
+    
+    static PathNode of(int x, int y, PathNode parent) {
+        return new PathNode(x, y, parent);
+    }
+    
     static PathNode of(Node node) {
-        return new PathNode(node.getX(), node.getY(), null);
+        return of(node, null);
     }
     
     static PathNode of(Node node, PathNode parent) {
-        return new PathNode(node.getX(), node.getY(), parent);
+        return of(node.getX(), node.getY(), parent);
     }
 }

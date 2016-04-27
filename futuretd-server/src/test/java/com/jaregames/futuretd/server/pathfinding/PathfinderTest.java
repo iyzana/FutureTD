@@ -15,21 +15,40 @@ public class PathfinderTest {
     
     @Test
     public void findPath() throws Exception {
+        Thread.sleep(10000);
         double duration = 0;
+        int validPaths = 0;
         for (int i = 0; i < 100; i++) {
             System.out.println("run " + i);
-            int w = 600;
-            int h = 600;
-            Node[][] nodeArray = new Node[w][h];
+            int w = 1000;
+            int h = 1000;
+            TraversableNode[][] nodeArray = new TraversableNode[w][h];
             for (int x = 0; x < w; x++) {
                 for (int y = 0; y < h; y++) {
                     boolean traversable = Math.random() < 0.8;
-                    nodeArray[x][y] = new Node(x, y, traversable);
+                    int finalX = x;
+                    int finalY = y;
+                    nodeArray[x][y] = new TraversableNode() {
+                        @Override
+                        public boolean isTraversable() {
+                            return traversable;
+                        }
+    
+                        @Override
+                        public int getX() {
+                            return finalX;
+                        }
+    
+                        @Override
+                        public int getY() {
+                            return finalY;
+                        }
+                    };
                 }
             }
             TiledMap map = new TiledMap() {
                 @Override
-                public Node getNodeAt(int x, int y) {
+                public TraversableNode getNodeAt(int x, int y) {
                     return nodeArray[x][y];
                 }
                 
@@ -43,14 +62,15 @@ public class PathfinderTest {
                     return h;
                 }
             };
-            Node start = new Node(0, 0);
-            Node end = new Node(map.getWidth() - 1, map.getHeight() - 1);
+            Node start = SimpleNode.of(0, 0);
+            Node end = SimpleNode.of(map.getWidth() - 1, map.getHeight() - 1);
             
             long startTime = System.nanoTime();
             try {
 //                System.out.println("pathfinding");
                 List<Node> nodes = Pathfinder.findPath(map, start, end);
                 duration += (System.nanoTime() - startTime) / 1000000000.0;
+                validPaths++;
                 
                 //            String path = nodes.stream().map(Object::toString).collect(Collectors.joining(" -> "));
                 //            System.out.println("found path " + path);
@@ -66,7 +86,7 @@ public class PathfinderTest {
                 //                System.out.println();
                 //            }
             } catch (NoPathFoundException e) {
-                duration += (System.nanoTime() - startTime) / 1000000000.0;
+                // duration += (System.nanoTime() - startTime) / 1000000000.0;
                 //                System.out.println("time " + duration + " s");
                 System.out.println(e.getMessage());
                 
@@ -79,6 +99,7 @@ public class PathfinderTest {
                 //            }
             }
         }
+        System.out.println("valid paths found " + validPaths);
         System.out.println("time " + duration + " s");
     }
 }
