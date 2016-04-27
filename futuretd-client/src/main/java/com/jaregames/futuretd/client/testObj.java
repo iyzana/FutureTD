@@ -6,13 +6,14 @@ import java.awt.image.BufferedImage;
 /**
  * Created by René on 26.04.2016.
  */
-public class testObj {
-    BufferedImage img;
-    testObj(){
+public class TestObj {
+    private BufferedImage img;
+    
+    public TestObj() {
         img = ImageLoader.loadImage("daMalRendern.png");
     }
-
-    public void render(Graphics2D g2d){
-        g2d.drawImage(img,200, 300, null);
+    
+    public void render(Graphics2D g) {
+        g.drawImage(img, 200, 300, null);
     }
 }

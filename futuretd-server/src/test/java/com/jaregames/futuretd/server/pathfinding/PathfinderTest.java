@@ -16,10 +16,10 @@ public class PathfinderTest {
     @Test
     public void findPath() throws Exception {
         double duration = 0;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             System.out.println("run " + i);
-            int w = 200;
-            int h = 200;
+            int w = 600;
+            int h = 600;
             Node[][] nodeArray = new Node[w][h];
             for (int x = 0; x < w; x++) {
                 for (int y = 0; y < h; y++) {
@@ -66,7 +66,7 @@ public class PathfinderTest {
                 //                System.out.println();
                 //            }
             } catch (NoPathFoundException e) {
-                // duration += (System.nanoTime() - startTime) / 1000000000.0;
+                duration += (System.nanoTime() - startTime) / 1000000000.0;
                 //                System.out.println("time " + duration + " s");
                 System.out.println(e.getMessage());
                 

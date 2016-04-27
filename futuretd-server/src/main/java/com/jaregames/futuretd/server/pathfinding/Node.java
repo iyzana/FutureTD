@@ -17,6 +17,14 @@ public class Node {
     private final int y;
     private boolean traversable = false;
     
+    /**
+     * Creates a abstract representation of a node on a grid
+     * with an additional marker if it may or may not be traversed
+     * 
+     * @param x The nodes x coordinate
+     * @param y The nodes y coordinate
+     * @param traversable If the node can be walked over
+     */
     public Node(int x, int y, boolean traversable) {
         this(x, y);
         this.traversable = traversable;

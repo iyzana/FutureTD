@@ -1,5 +1,8 @@
 package com.jaregames.futuretd.server.pathfinding;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Project: futuretd
  * <p/>
@@ -8,27 +11,31 @@ package com.jaregames.futuretd.server.pathfinding;
  * @author Jannis
  */
 class PathNode extends Node {
+    @Getter
+    @Setter
     private PathNode parent;
     private float steps = -1;
     
+    /**
+     * A node representing data neccesarry for a* pathfinding
+     * 
+     * @param x The nodes x coordinate
+     * @param y The nodes y coordinat
+     * @param parent The nodes parent or predecessor
+     */
     private PathNode(int x, int y, PathNode parent) {
         super(x, y);
         this.parent = parent;
     }
     
+    /**
+     * @return The steps needed to get to this node from the starting point
+     */
     float getSteps() {
-        if (steps != -1) return steps;
+        if (steps < 0) return steps;
         if (parent == null) return steps = 0;
         float weight = getX() - parent.getX() == 0 || getY() - parent.getY() == 0 ? 1 : 1.1f;
         return steps = parent.getSteps() + weight;
-    }
-    
-    PathNode getParent() {
-        return parent;
-    }
-    
-    public void setParent(PathNode parent) {
-        this.parent = parent;
     }
     
     static PathNode of(Node node) {
