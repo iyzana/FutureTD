@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Project: futuretd
@@ -24,8 +24,8 @@ public class FutureTdServer implements Runnable {
     private boolean gameStart;
     private boolean sessionEnded;
 
-    private LinkedList<Serializable> inputQueue;
-    private LinkedList<Serializable> outputQueue;
+    private Queue<Serializable> inputQueue;
+    private Queue<Serializable> outputQueue;
 
     FutureTdServer() {
         gameStart = false;
@@ -64,7 +64,7 @@ public class FutureTdServer implements Runnable {
             }
             if (!outputQueue.isEmpty()) {
                 try {
-                    out.writeObject(outputQueue.getFirst());
+                    out.writeObject(outputQueue.poll());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -83,7 +83,7 @@ public class FutureTdServer implements Runnable {
         outputQueue.add(s);
     }
 
-    public LinkedList getInputQueue(){
+    public Queue<Serializable> getInputQueue(){
         return inputQueue;
     }
 
