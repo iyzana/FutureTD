@@ -17,7 +17,10 @@ import java.util.Queue;
  * @author Jannis
  */
 @SuppressWarnings("Duplicates")
-public class FutureTdServer implements Runnable {
+public class FutureTdServer extends Thread {
+
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
 
     private ServerSocket serverSocket;
     private Socket clientSocket;
@@ -26,16 +29,14 @@ public class FutureTdServer implements Runnable {
     private boolean sessionEnded;
 
     private Queue<Serializable> inputQueue;
-    private Queue<Serializable> outputQueue;
 
     FutureTdServer() {
         gameStart = false;
         clientSocket = new Socket();
 
         inputQueue = new LinkedList<>();
-        outputQueue = new LinkedList<>();
 
-        this.run();
+        this.start();
     }
 
     @Override
@@ -67,14 +68,6 @@ public class FutureTdServer implements Runnable {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            if (!outputQueue.isEmpty()) {
-                try {
-                    out.writeObject(outputQueue.poll());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
         }
 
         try {
@@ -84,8 +77,14 @@ public class FutureTdServer implements Runnable {
         }
     }
 
-    public void send(Serializable s) {
-        outputQueue.add(s);
+    public boolean send(Serializable s) {
+            try {
+                out.writeObject(s);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        return true;
     }
 
     public Queue<Serializable> getInputQueue(){

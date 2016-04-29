@@ -12,12 +12,11 @@ import java.util.Queue;
  * Created by René on 27.04.2016.
  */
 @SuppressWarnings("Duplicates")
-public class Client implements Runnable {
+public class Client extends Thread {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
     private Queue<Serializable> inputQueue;
-    private Queue<Serializable> outputQueue;
 
     private Socket socketToServer;
     private boolean sessionEnded;
@@ -25,10 +24,9 @@ public class Client implements Runnable {
     Client() {
 
         inputQueue = new LinkedList<>();
-        outputQueue = new LinkedList<>();
 
         sessionEnded = false;
-        this.run();
+        this.start();
     }
 
     @Override
@@ -48,19 +46,24 @@ public class Client implements Runnable {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            if(!outputQueue.isEmpty()){
-                try {
-                    out.writeObject(outputQueue.poll());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        }
 
+        try {
+            socketToServer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void send(Serializable s){
-        outputQueue.add(s);
+    public boolean send(Serializable s){
+            try {
+                out.writeObject(s);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        return true;
+
     }
 
     public Queue<Serializable> getInputQueue(){
