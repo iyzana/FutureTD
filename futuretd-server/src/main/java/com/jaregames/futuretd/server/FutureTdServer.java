@@ -1,12 +1,12 @@
 package com.jaregames.futuretd.server;
 
-import com.jaregames.futuretd.server.Communication.EndSessionToken;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
 
 /**
  * Project: futuretd
@@ -15,11 +15,17 @@ import java.net.Socket;
  *
  * @author Jannis
  */
+@SuppressWarnings("Duplicates")
 public class FutureTdServer implements Runnable {
-    ServerSocket serverSocket;
-    Socket clientSocket;
-    boolean gameStart;
-    boolean sessionEnded;
+
+    private ServerSocket serverSocket;
+    private Socket clientSocket;
+
+    private boolean gameStart;
+    private boolean sessionEnded;
+
+    private LinkedList<Serializable> inputQueue;
+    private LinkedList<Serializable> outputQueue;
 
     FutureTdServer() {
         gameStart = false;
@@ -33,10 +39,11 @@ public class FutureTdServer implements Runnable {
             serverSocket = new ServerSocket(2960);
         } catch (IOException e) {
             e.printStackTrace();
+            sessionEnded = true;
         }
 
         ObjectInputStream in = null;
-        ObjectOutputStream out;
+        ObjectOutputStream out = null;
 
         try {
             clientSocket = serverSocket.accept();
@@ -45,16 +52,23 @@ public class FutureTdServer implements Runnable {
             out = new ObjectOutputStream(new ObjectOutputStream(clientSocket.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
+            sessionEnded = true;
         }
 
         while (!sessionEnded) {
             Object o = null;
             try {
-                o = in.readObject();
+                inputQueue.add((Serializable) in.readObject());
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            if (o != null) process(o);
+            if (!outputQueue.isEmpty()) {
+                try {
+                    out.writeObject(outputQueue.getFirst());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
         }
 
@@ -65,12 +79,12 @@ public class FutureTdServer implements Runnable {
         }
     }
 
-    private void process(Object obj) {
+    public void send(Serializable s) {
+        outputQueue.add(s);
+    }
 
-        if (obj instanceof EndSessionToken) {
-            sessionEnded = true;
-        }
-
+    public LinkedList getInputQueue(){
+        return inputQueue;
     }
 
     public static void main(String[] args) {
