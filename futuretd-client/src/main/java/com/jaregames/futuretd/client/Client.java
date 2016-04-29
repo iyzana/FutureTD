@@ -1,20 +1,25 @@
 package com.jaregames.futuretd.client;
 
-import com.jaregames.futuretd.client.Communication.EndSessionToken;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
+import java.util.LinkedList;
 
 /**
  * Created by René on 27.04.2016.
  */
+@SuppressWarnings("Duplicates")
 public class Client implements Runnable {
-    ObjectInputStream in;
-    ObjectOutputStream out;
-    Socket socketToServer;
-    boolean sessionEnded;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
+
+    private LinkedList<Serializable> inputQueue;
+    private LinkedList<Serializable> outputQueue;
+
+    private Socket socketToServer;
+    private boolean sessionEnded;
 
     Client() {
 
@@ -24,9 +29,6 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
-
-        socketToServer = new Socket();
-
         try {
             socketToServer = new Socket("localhost", 2960);
             in = new ObjectInputStream(socketToServer.getInputStream());
@@ -38,20 +40,27 @@ public class Client implements Runnable {
         while (!sessionEnded) {
             Object o = null;
             try {
-                o = in.readObject();
+                inputQueue.add((Serializable) in.readObject());
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            if (o != null) process(o);
+            if(!outputQueue.isEmpty()){
+                try {
+                    out.writeObject(outputQueue.getFirst());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 
-    private void process(Object obj){
+    public void send(Serializable s){
+        outputQueue.add(s);
+    }
 
-        if(obj instanceof EndSessionToken){
-            sessionEnded = true;
-        }
-
+    public LinkedList getInputQueue(){
+        return inputQueue;
     }
 
     public static void main(String[] args) {
