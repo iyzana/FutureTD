@@ -75,7 +75,7 @@ class GameWindow {
             }
             
             try {
-                Thread.sleep(2);
+                Thread.sleep(4);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
