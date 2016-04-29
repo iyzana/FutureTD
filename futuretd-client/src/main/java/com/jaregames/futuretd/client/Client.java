@@ -9,7 +9,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Created by René on 27.04.2016.
+ * Project: futuretd
+ * <p/>
+ * Created on 27.04.2016 at 21:27
+ *
+ * @author René
  */
 @SuppressWarnings("Duplicates")
 public class Client extends Thread {
