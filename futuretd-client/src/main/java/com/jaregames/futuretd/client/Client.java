@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.Queue;
 
 /**
@@ -22,6 +23,9 @@ public class Client implements Runnable {
     private boolean sessionEnded;
 
     Client() {
+
+        inputQueue = new LinkedList<>();
+        outputQueue = new LinkedList<>();
 
         sessionEnded = false;
         this.run();

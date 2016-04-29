@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.Queue;
 
 /**
@@ -30,6 +31,10 @@ public class FutureTdServer implements Runnable {
     FutureTdServer() {
         gameStart = false;
         clientSocket = new Socket();
+
+        inputQueue = new LinkedList<>();
+        outputQueue = new LinkedList<>();
+
         this.run();
     }
 
