@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.client.communication;
+package com.jaregames.futuretd.communication;
 
 import java.io.Serializable;
 
@@ -9,5 +9,5 @@ import java.io.Serializable;
  *
  * @author René
  */
-public class GameStartToken implements Serializable {
+public class BuildTower implements Serializable{
 }

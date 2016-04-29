@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.client.communication;
+package com.jaregames.futuretd.communication;
 
 /**
  * Project: futuretd
