@@ -3,7 +3,6 @@ package com.jaregames.futuretd.client;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import java.awt.Canvas;
-import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -18,53 +17,46 @@ import java.awt.image.BufferStrategy;
  * @author René
  */
 class GameWindow {
-    private Canvas canvas;
-    private GameMap gameMap;
-    static Camera camera;
-    private KeyboardInput keyboardInput;
+    private Canvas canvas; // Drawing pane
+    private BufferStrategy bufferStrategy; // Drawing strategy
+    private boolean running; // If the game is running
     
-    private boolean running;
-    private BufferStrategy bufferStrategy;
+    private KeyboardInput keyboardInput; // Keyboard handler
     
-    private long lastUpdate;
-    private long gameTime;
+    private long lastUpdate; // time when the game was last updated
+    private long gameTime; // time the game thinks currently is
     
+    private GameMap gameMap; // The map
+    static Camera camera; // The camera for maintaining the scrolling position
+    
+    /**
+     * Creates a new window, displays it and starts the gameLoop
+     */
     GameWindow() {
-        JFrame gameWindow = new JFrame("FutureTD");
-        gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        gameWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
-        gameWindow.setUndecorated(true);
-        gameWindow.enableInputMethods(false);
+        JFrame gameWindow = new JFrame("FutureTD"); // Create window with title 'FutureTD'
+        gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Exit application on window close
+        gameWindow.setUndecorated(true); // Remove window title bar
         
-        keyboardInput = new KeyboardInput();
+        keyboardInput = new KeyboardInput(); // Create keyboard input handler
         
-        canvas = new Canvas();
-        canvas.setFocusTraversalKeysEnabled(false);
-        canvas.addKeyListener(keyboardInput);
-        gameWindow.add(canvas);
+        canvas = new Canvas(); // Create a drawing pane
+        canvas.setFocusTraversalKeysEnabled(false); // Pass 'tab' keystrokes through to our keyboard
+        canvas.addKeyListener(keyboardInput); // Add keyboard handler to our pane
+        gameWindow.add(canvas); // Put drawing pane in window
         
-        GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        screen.setFullScreenWindow(gameWindow);
+        GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(); // Get main screen
+        screen.setFullScreenWindow(gameWindow); // Set application to fullscreen
         
-        canvas.requestFocusInWindow();
+        canvas.requestFocusInWindow(); // Request keyboard focus
         
-        gameLoop();
+        gameLoop(); // Run the game
         
-        gameWindow.dispose();
+        gameWindow.dispose(); // Dispose window if game finished
     }
     
-    private void init() {
-        gameMap = new GameMap();
-        camera = new Camera();
-        
-        canvas.createBufferStrategy(2);
-        bufferStrategy = canvas.getBufferStrategy();
-        
-        gameTime = System.nanoTime();
-        lastUpdate = System.nanoTime();
-        running = true;
-    }
-    
+    /**
+     * Initialize the game and update and render it while running
+     */
     private void gameLoop() {
         init();
         
@@ -75,44 +67,79 @@ class GameWindow {
             }
             
             try {
-                Thread.sleep(4);
+                Thread.sleep(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
+ 
+     /**
+     * Initialize objects important for the game here
+     */
+    private void init() {
+        gameMap = new GameMap();
+        camera = new Camera();
     
-    private void update() {
-        double delta = delta();
-        System.out.println(1 / delta);
-        
-        keyboardInput.poll();
-        gameMap.update(delta);
-        
-        if (KeyboardInput.keyDown(KeyEvent.VK_ESCAPE)) running = false;
+        // Set rendering technique to double buffered
+        canvas.createBufferStrategy(2);
+        bufferStrategy = canvas.getBufferStrategy();
+    
+        // Set initial values for constant fps
+        gameTime = System.nanoTime();
+        lastUpdate = System.nanoTime();
+        running = true;
     }
     
+    /**
+     * Update the state of all active game objects
+     */
+    private void update() {
+        double delta = delta(); // Get the time since the last frame in seconds
+        System.out.println(1 / delta); // Print the current fps
+        
+        keyboardInput.poll(); // Read the newest keyboard data
+        gameMap.update(delta);
+        
+        if (KeyboardInput.keyDown(KeyEvent.VK_ESCAPE)) running = false; // Quit game on press escape
+    }
+    
+    /**
+     * Render all visible game objects
+     */
+    private void render() {
+        Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics(); // Get the graphics to draw with this cycle
+        
+        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the screen
+        
+        // Render scene
+        g.fillRect(-(int) camera.getX(), -(int) camera.getY(), 100, 100);
+        gameMap.render(g);
+        
+        g.dispose(); // Invalidate the graphics for this frame
+        bufferStrategy.show(); // Show the rendered frame on the screen
+    }
+    
+    /**
+     * Calculates the difference in time since this method was last called
+     * @return difference in time since last call in seconds
+     */
     private double delta() {
         long diff = System.nanoTime() - lastUpdate;
         lastUpdate += diff;
         return diff / 1_000_000_000.0;
     }
     
+    /**
+     * Determines if a new frame shall be rendered
+     * If the previous frame lasted longer the next frame may come earlier
+     * 
+     * @return If a new frame shall be rendered
+     */
     private boolean frame() {
         long diff = System.nanoTime() - gameTime;
-        boolean frame = diff > 8_000_000;
-        if(frame) gameTime += 8_000_000;
+        boolean frame = diff > 7_000_000;
+        if(frame) gameTime += 7_000_000;
         return frame;
-    }
-    
-    private void render() {
-        Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-        
-        g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        g.fillRect(-(int) camera.getX(), -(int) camera.getY(), 100, 100);
-        gameMap.render(g);
-        
-        g.dispose();
-        bufferStrategy.show();
     }
 }

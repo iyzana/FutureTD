@@ -35,6 +35,9 @@ public class KeyboardInput implements KeyListener {
         }
     }
     
+    /**
+     * Put the new state of the keyboard in the keys array
+     */
     public synchronized void poll() {
         typedString.setLength(0);
         for (int i = 0; i < KEY_COUNT; ++i) {
@@ -54,14 +57,25 @@ public class KeyboardInput implements KeyListener {
         }
     }
     
+    /**
+     * @param keyCode The key to check of: On of KeyEvent.VK_
+     * @return If the key is currently down
+     */
     public static boolean keyDown(int keyCode) {
         return keys[keyCode] == KeyState.ONCE || keys[keyCode] == KeyState.PRESSED;
     }
     
+    /**
+     * @param keyCode The key to check of: On of KeyEvent.VK_
+     * @return If the key has just changed from up to down
+     */
     public static boolean keyDownOnce(int keyCode) {
         return keys[keyCode] == KeyState.ONCE;
     }
     
+    /**
+     * @return The last typed characters
+     */
     public static String typedString() {
         return typedString.toString();
     }

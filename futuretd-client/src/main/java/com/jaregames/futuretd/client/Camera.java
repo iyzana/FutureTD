@@ -12,19 +12,19 @@ import java.awt.event.KeyEvent;
  * @author René
  */
 @Getter
-public class Camera {
+class Camera {
     private double x;
     private double y;
     
     private int width;
     private int height;
     
-    public Camera() {
+    Camera() {
         x = 0;
         y = 0;
     }
     
-    public void update(double delta) {
+    void update(double delta) {
         if (KeyboardInput.keyDown(KeyEvent.VK_D)) {
             x += 600 * delta;
         }

@@ -6,6 +6,8 @@ import lombok.Getter;
  * Project: futuretd
  * <p/>
  * Created on 26.04.2016 at 22:54
+ * <p/>
+ * Implementation of Node additionally providing a parent and an abstract distance
  *
  * @author Jannis
  */

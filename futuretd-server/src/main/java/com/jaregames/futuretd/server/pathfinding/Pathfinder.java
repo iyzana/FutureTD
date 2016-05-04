@@ -31,7 +31,7 @@ public class Pathfinder {
      * @param start The start node to start searching from
      * @param end   The end (goal) node to reach
      * @return A path from start to end, as a list of every node on the path. Starting with the node start and ending with the node end.
-     * @throws NoPathFoundException If a path cannot or cannot be found in a reasonable amount of time
+     * @throws NoPathFoundException If a path cannot be found or cannot be found in a reasonable amount of time
      */
     public static List<Node> findPath(TiledMap map, Node start, Node end) throws NoPathFoundException {
         return findPath(map, start, Collections.singletonList(end));
@@ -45,7 +45,7 @@ public class Pathfinder {
      * @param start The start node to start searching from
      * @param ends  The ending (goal) nodes to reach
      * @return A path from start to any end, as a list of every node on the path. Starting with the node start and ending with any of the nodes in ends.
-     * @throws NoPathFoundException If a path cannot or cannot be found in a reasonable amount of time
+     * @throws NoPathFoundException If a path cannot be found or cannot be found in a reasonable amount of time
      */
     public static List<Node> findPath(TiledMap map, Node start, List<Node> ends) throws NoPathFoundException {
         cachedDistances.set(null); // Reset the cache from last pathfinding
