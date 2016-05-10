@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.client.Tower1;
+package com.jaregames.futuretd.client.tower;
 
 /**
  * Created by El Bergmann on 10.05.2016.
