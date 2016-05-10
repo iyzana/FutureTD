@@ -3,7 +3,6 @@ package com.jaregames.futuretd.client;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-
 public class KeyboardInput implements KeyListener {
     private static final int KEY_COUNT = 256;
     
@@ -25,7 +24,7 @@ public class KeyboardInput implements KeyListener {
     // Typed letter
     private static StringBuilder typedString;
     
-    public KeyboardInput() {
+    KeyboardInput() {
         currentKeys = new boolean[KEY_COUNT];
         keys = new KeyState[KEY_COUNT];
         typedString = new StringBuilder();
@@ -38,7 +37,7 @@ public class KeyboardInput implements KeyListener {
     /**
      * Put the new state of the keyboard in the keys array
      */
-    public synchronized void poll() {
+    synchronized void poll() {
         typedString.setLength(0);
         for (int i = 0; i < KEY_COUNT; ++i) {
             // Set the key state

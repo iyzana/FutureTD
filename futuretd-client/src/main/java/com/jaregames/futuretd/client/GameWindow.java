@@ -108,7 +108,7 @@ class GameWindow {
      * Render all visible game objects
      */
     private void render() {
-        Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics(); // Get the graphics to draw with this cycle
+        Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics(); // Get the graphics to draw with for this cycle
         
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the screen
         
@@ -122,7 +122,7 @@ class GameWindow {
     
     /**
      * Calculates the difference in time since this method was last called
-     * @return difference in time since last call in seconds
+     * @return difference in seconds
      */
     private double delta() {
         long diff = System.nanoTime() - lastUpdate;
