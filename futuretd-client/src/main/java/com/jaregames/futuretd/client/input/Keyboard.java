@@ -1,9 +1,9 @@
-package com.jaregames.futuretd.client;
+package com.jaregames.futuretd.client.input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyboardInput implements KeyListener {
+public class Keyboard implements KeyListener {
     private static final int KEY_COUNT = 256;
     
     private enum KeyState {
@@ -24,12 +24,12 @@ public class KeyboardInput implements KeyListener {
     // Typed letter
     private static StringBuilder typedString;
     
-    KeyboardInput() {
+    public Keyboard() {
         currentKeys = new boolean[KEY_COUNT];
         keys = new KeyState[KEY_COUNT];
         typedString = new StringBuilder();
         
-        for (int i = 0; i < KEY_COUNT; ++i) {
+        for (int i = 0; i < KEY_COUNT; i++) {
             keys[i] = KeyState.RELEASED;
         }
     }
@@ -37,9 +37,9 @@ public class KeyboardInput implements KeyListener {
     /**
      * Put the new state of the keyboard in the keys array
      */
-    synchronized void poll() {
+    public synchronized void poll() {
         typedString.setLength(0);
-        for (int i = 0; i < KEY_COUNT; ++i) {
+        for (int i = 0; i < KEY_COUNT; i++) {
             // Set the key state
             if (currentKeys[i]) {
                 // If the key is down now, but was not
@@ -78,6 +78,8 @@ public class KeyboardInput implements KeyListener {
     public static String typedString() {
         return typedString.toString();
     }
+    
+    // === Listener methods ===
     
     public synchronized void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();

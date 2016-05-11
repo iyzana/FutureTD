@@ -1,5 +1,8 @@
 package com.jaregames.futuretd.client;
 
+import com.jaregames.futuretd.client.input.Keyboard;
+import com.jaregames.futuretd.client.input.Mouse;
+
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import java.awt.Canvas;
@@ -21,7 +24,8 @@ class GameWindow {
     private BufferStrategy bufferStrategy; // Drawing strategy
     private boolean running; // If the game is running
     
-    private KeyboardInput keyboardInput; // Keyboard handler
+    private Keyboard keyboard; // Keyboard handler
+    private Mouse mouse; // Keyboard handler
     
     private long lastUpdate; // time when the game was last updated
     private long gameTime; // time the game thinks currently is
@@ -37,11 +41,15 @@ class GameWindow {
         gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Exit application on window close
         gameWindow.setUndecorated(true); // Remove window title bar
         
-        keyboardInput = new KeyboardInput(); // Create keyboard input handler
+        keyboard = new Keyboard(); // Create keyboard input handler
+        mouse = new Mouse(); // Create mouse input handler
         
         canvas = new Canvas(); // Create a drawing pane
         canvas.setFocusTraversalKeysEnabled(false); // Pass 'tab' keystrokes through to our keyboard
-        canvas.addKeyListener(keyboardInput); // Add keyboard handler to our pane
+        canvas.addKeyListener(keyboard); // Add keyboard handler to our pane
+        canvas.addMouseListener(mouse); // Add mouse click handler
+        canvas.addMouseMotionListener(mouse); // Add mouse position handler
+        canvas.addMouseWheelListener(mouse); // Add mouse wheel handler
         gameWindow.add(canvas); // Put drawing pane in window
         
         GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(); // Get main screen
@@ -98,10 +106,11 @@ class GameWindow {
         double delta = delta(); // Get the time since the last frame in seconds
         System.out.println(1 / delta); // Print the current fps
         
-        keyboardInput.poll(); // Read the newest keyboard data
+        keyboard.poll(); // Read the newest keyboard data
+        mouse.poll(); // Read the newest mouse data
         gameMap.update(delta);
         
-        if (KeyboardInput.keyDown(KeyEvent.VK_ESCAPE)) running = false; // Quit game on press escape
+        if (Keyboard.keyDown(KeyEvent.VK_ESCAPE)) running = false; // Quit game on press escape
     }
     
     /**

@@ -1,5 +1,6 @@
 package com.jaregames.futuretd.client;
 
+import com.jaregames.futuretd.client.input.Keyboard;
 import lombok.Getter;
 
 import java.awt.event.KeyEvent;
@@ -25,16 +26,16 @@ class Camera {
     }
     
     void update(double delta) {
-        if (KeyboardInput.keyDown(KeyEvent.VK_D)) {
+        if (Keyboard.keyDown(KeyEvent.VK_D)) {
             x += 600 * delta;
         }
-        if (KeyboardInput.keyDown(KeyEvent.VK_S)) {
+        if (Keyboard.keyDown(KeyEvent.VK_S)) {
             y += 600 * delta;
         }
-        if (KeyboardInput.keyDown(KeyEvent.VK_A)) {
+        if (Keyboard.keyDown(KeyEvent.VK_A)) {
             x -= 600 * delta;
         }
-        if (KeyboardInput.keyDown(KeyEvent.VK_W)) {
+        if (Keyboard.keyDown(KeyEvent.VK_W)) {
             y -= 600 * delta;
         }
     }
