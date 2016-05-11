@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.communication;
+package com.jaregames.futuretd.server.communication;
 
 import java.io.Serializable;
 
@@ -9,5 +9,5 @@ import java.io.Serializable;
  *
  * @author René
  */
-public class BuildTower implements Serializable{
+public class SpawnMinion implements Serializable {
 }

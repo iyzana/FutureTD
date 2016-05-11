@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.communication;
+package com.jaregames.futuretd.server.communication;
 
 import java.io.Serializable;
 
