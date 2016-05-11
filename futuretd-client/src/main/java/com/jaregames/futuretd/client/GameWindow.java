@@ -2,6 +2,7 @@ package com.jaregames.futuretd.client;
 
 import com.jaregames.futuretd.client.input.Keyboard;
 import com.jaregames.futuretd.client.input.Mouse;
+import lombok.extern.log4j.Log4j2;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -19,6 +20,7 @@ import java.awt.image.BufferStrategy;
  *
  * @author René
  */
+@Log4j2
 class GameWindow {
     private Canvas canvas; // Drawing pane
     private BufferStrategy bufferStrategy; // Drawing strategy
@@ -56,6 +58,8 @@ class GameWindow {
         screen.setFullScreenWindow(gameWindow); // Set application to fullscreen
         
         canvas.requestFocusInWindow(); // Request keyboard focus
+    
+        log.info("Window created");
         
         gameLoop(); // Run the game
         
@@ -97,6 +101,8 @@ class GameWindow {
         gameTime = System.nanoTime();
         lastUpdate = System.nanoTime();
         running = true;
+        
+        log.info("Initialization complete");
     }
     
     /**
@@ -104,7 +110,7 @@ class GameWindow {
      */
     private void update() {
         double delta = delta(); // Get the time since the last frame in seconds
-        System.out.println(1 / delta); // Print the current fps
+        log.trace(1 / delta + " fps"); // Print the current fps
         
         keyboard.poll(); // Read the newest keyboard data
         mouse.poll(); // Read the newest mouse data

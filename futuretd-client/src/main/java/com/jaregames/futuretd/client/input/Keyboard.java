@@ -35,7 +35,9 @@ public class Keyboard implements KeyListener {
     }
     
     /**
-     * Put the new state of the keyboard in the keys array
+     * Write the current state of the keyboard to the polled keyboard data
+     *
+     * This method synchronizes the input with our game ticks
      */
     public synchronized void poll() {
         typedString.setLength(0);

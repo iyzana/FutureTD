@@ -1,5 +1,7 @@
 package com.jaregames.futuretd.server;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +19,7 @@ import java.util.Queue;
  * @author Jannis
  */
 @SuppressWarnings("Duplicates")
+@Log4j2
 public class FutureTdServer extends Thread {
 
     private ObjectInputStream in;

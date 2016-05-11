@@ -52,6 +52,11 @@ public class Mouse extends MouseAdapter {
         }
     }
     
+    /**
+     * Write the current state of the mouse to the polled mouse data
+     * 
+     * This method synchronizes the input with our game ticks
+     */
     public synchronized void poll() {
         for (int i = 0; i < BUTTON_COUNT; ++i) {
             // Set the mouse state
@@ -70,16 +75,6 @@ public class Mouse extends MouseAdapter {
     }
     
     // @formatter:off
-    public static boolean isDownOnce() {
-        return isDownOnce(MouseEvent.BUTTON1);
-    }
-    public static boolean isRightDownOnce() {
-        return isDownOnce(MouseEvent.BUTTON3);
-    }
-    public static boolean isDownOnce(int button) {
-        return buttons[button] == ButtonState.PRESSED;
-    }
-    
     public static boolean isDown() {
         return isDown(MouseEvent.BUTTON1);
     }
@@ -90,14 +85,14 @@ public class Mouse extends MouseAdapter {
         return buttons[button] == ButtonState.DOWN || buttons[1] == ButtonState.PRESSED;
     }
     
-    public static boolean isUpOnce() {
-        return isUpOnce(MouseEvent.BUTTON1);
+    public static boolean isDownOnce() {
+        return isDownOnce(MouseEvent.BUTTON1);
     }
-    public static boolean isRightUpOnce() {
-        return isUpOnce(MouseEvent.BUTTON3);
+    public static boolean isRightDownOnce() {
+        return isDownOnce(MouseEvent.BUTTON3);
     }
-    public static boolean isUpOnce(int button) {
-        return buttons[button] == ButtonState.RELEASED;
+    public static boolean isDownOnce(int button) {
+        return buttons[button] == ButtonState.PRESSED;
     }
     
     public static boolean isUp() {
@@ -108,6 +103,16 @@ public class Mouse extends MouseAdapter {
     }
     public static boolean isUp(int button) {
         return buttons[button] == ButtonState.UP || buttons[1] == ButtonState.RELEASED;
+    }
+    
+    public static boolean isUpOnce() {
+        return isUpOnce(MouseEvent.BUTTON1);
+    }
+    public static boolean isRightUpOnce() {
+        return isUpOnce(MouseEvent.BUTTON3);
+    }
+    public static boolean isUpOnce(int button) {
+        return buttons[button] == ButtonState.RELEASED;
     }
     
     public static Point getPos() {

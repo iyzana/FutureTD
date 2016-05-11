@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{%date{HH:mm:ss.SSS} [%-9thread] %70replace{%location}{^.*?\..*?\..*?\.}{} %5level - %msg%n}"/>
+        </Console>
+        <Console name="SimpleConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%date{HH:mm:ss.SSS} [%-9thread] %30replace{%logger}{^.*?\..*?\..*?\.}{} %-5level - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
