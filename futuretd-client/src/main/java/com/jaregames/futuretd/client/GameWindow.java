@@ -36,9 +36,11 @@ class GameWindow {
     static Camera camera; // The camera for maintaining the scrolling position
     
     /**
-     * Creates a new window, displays it and starts the gameLoop
+     * Create a new window, display it and start the gameLoop
      */
     GameWindow() {
+        log.info("Application start");
+        
         JFrame gameWindow = new JFrame("FutureTD"); // Create window with title 'FutureTD'
         gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Exit application on window close
         gameWindow.setUndecorated(true); // Remove window title bar
@@ -47,7 +49,7 @@ class GameWindow {
         mouse = new Mouse(); // Create mouse input handler
         
         canvas = new Canvas(); // Create a drawing pane
-        canvas.setFocusTraversalKeysEnabled(false); // Pass 'tab' keystrokes through to our keyboard
+        canvas.setFocusTraversalKeysEnabled(false); // Pass 'tab' keystrokes through to our keyboard input handler
         canvas.addKeyListener(keyboard); // Add keyboard handler to our pane
         canvas.addMouseListener(mouse); // Add mouse click handler
         canvas.addMouseMotionListener(mouse); // Add mouse position handler
@@ -136,7 +138,7 @@ class GameWindow {
     }
     
     /**
-     * Calculates the difference in time since this method was last called
+     * Calculates the difference in time since this method was last called.
      * @return difference in seconds
      */
     private double delta() {
@@ -146,8 +148,8 @@ class GameWindow {
     }
     
     /**
-     * Determines if a new frame shall be rendered
-     * If the previous frame lasted longer the next frame may come earlier
+     * Determines if a new frame shall be rendered.
+     * If the previous frame lasted longer the next frame may come earlier.
      * 
      * @return If a new frame shall be rendered
      */

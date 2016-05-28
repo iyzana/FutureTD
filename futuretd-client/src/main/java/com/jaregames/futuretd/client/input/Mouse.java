@@ -9,6 +9,8 @@ import java.awt.event.MouseWheelEvent;
  * Project: futuretd
  * <p/>
  * Created on 10.05.2016 at 22:33
+ * <p/>
+ * Accessing the current mouse position and data
  *
  * @author Jannis
  */

@@ -3,6 +3,9 @@ package com.jaregames.futuretd.client.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Accessing the current keyboard status
+ */
 public class Keyboard implements KeyListener {
     private static final int KEY_COUNT = 256;
     
@@ -36,7 +39,7 @@ public class Keyboard implements KeyListener {
     
     /**
      * Write the current state of the keyboard to the polled keyboard data
-     *
+     * <p>
      * This method synchronizes the input with our game ticks
      */
     public synchronized void poll() {
@@ -64,6 +67,27 @@ public class Keyboard implements KeyListener {
      */
     public static boolean keyDown(int keyCode) {
         return keys[keyCode] == KeyState.ONCE || keys[keyCode] == KeyState.PRESSED;
+    }
+    
+    /**
+     * @return If the ctrl key is currently down
+     */
+    public static boolean ctrl() {
+        return keyDown(KeyEvent.VK_CONTROL);
+    }
+    
+    /**
+     * @return If the alt key is currently down
+     */
+    public static boolean alt() {
+        return keyDown(KeyEvent.VK_ALT);
+    }
+    
+    /**
+     * @return If the shift key is currently down
+     */
+    public static boolean shift() {
+        return keyDown(KeyEvent.VK_SHIFT);
     }
     
     /**

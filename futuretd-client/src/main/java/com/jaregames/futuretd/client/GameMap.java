@@ -13,8 +13,7 @@ import static com.jaregames.futuretd.client.GameWindow.camera;
  * @author René
  */
 public class GameMap {
-    BufferedImage[][] mapInChunks;
-    
+    private BufferedImage[][] mapInChunks;
     
     public GameMap() {
         BufferedImage[] temp = ImageLoader.chunkify(ImageLoader.loadImage("chunkTest.png"), 6, 6);
@@ -35,8 +34,11 @@ public class GameMap {
     public void render(Graphics2D g) {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                g.drawImage(mapInChunks[i][j], (1920 / 6) * i -(int)camera.getX(), (1080 / 6) * j  -(int)camera.getY(), null);
-                g.drawRect((1920 / 6) * i -(int)camera.getX(), (1080 / 6) * j  -(int)camera.getY(), 1920/6, 1080/6);
+                int x = (1920 / 6) * i - (int) camera.getX();
+                int y = (1080 / 6) * j - (int) camera.getY();
+                
+                g.drawImage(mapInChunks[i][j], x, y, null);
+                g.drawRect(x, y, 1920 / 6, 1080 / 6);
             }
         }
     }
