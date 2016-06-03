@@ -5,7 +5,10 @@ import com.jaregames.futuretd.client.input.Mouse;
 import lombok.extern.log4j.Log4j2;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Project: futuretd
@@ -30,6 +33,8 @@ public class GameWindow extends Window {
     public static Camera camera; // The camera for maintaining the scrolling position
     private double fps;
     
+    private Map<RenderingHints.Key, Object> renderingHints;
+    
     /**
      * Create a new window, display it and start the gameLoop
      */
@@ -43,9 +48,9 @@ public class GameWindow extends Window {
         canvas.addMouseListener(mouse); // Add mouse click handler
         canvas.addMouseMotionListener(mouse); // Add mouse position handler
         canvas.addMouseWheelListener(mouse); // Add mouse wheel handler
-    
+        
         enableFullscreen();
-    
+        
         log.info("Window created");
         
         new Thread(() -> {
@@ -68,7 +73,7 @@ public class GameWindow extends Window {
             }
             
             try {
-                Thread.sleep(2);
+                Thread.sleep(4);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -87,6 +92,13 @@ public class GameWindow extends Window {
         // Set rendering technique to double buffered
         canvas.createBufferStrategy(2);
         bufferStrategy = canvas.getBufferStrategy();
+    
+        renderingHints = new HashMap<>(6);
+        renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        renderingHints.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+        renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         
         // Set initial values for constant fps
         gameTime = System.nanoTime();
@@ -106,7 +118,7 @@ public class GameWindow extends Window {
         keyboard.poll(); // Read the newest keyboard data
         mouse.poll(); // Read the newest mouse data
         
-        if(Keyboard.keyDownOnce(KeyEvent.VK_F11)) {
+        if (Keyboard.keyDownOnce(KeyEvent.VK_F11)) {
             toggleFullscreen();
             keyboard.setKeyReleased(KeyEvent.VK_F11);
         }
@@ -124,8 +136,10 @@ public class GameWindow extends Window {
         
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the screen
         g.scale(scale, scale);
-    
+        
         g.drawString((int) fps + " fps", 1878, 10);
+        
+        g.setRenderingHints(renderingHints);
         
         // Render scene
         //g.fillRect(-(int) camera.getX(), -(int) camera.getY(), 100, 100);
@@ -154,7 +168,7 @@ public class GameWindow extends Window {
      */
     private boolean frame() {
         long diff = System.nanoTime() - gameTime;
-        if(diff > 4 * 7_000_000) gameTime += diff - 4 * 7_000_000;
+        if (diff > 4 * 7_000_000) gameTime += diff - 4 * 7_000_000;
         boolean frame = diff > 7_000_000;
         if (frame) gameTime += 7_000_000;
         return frame;

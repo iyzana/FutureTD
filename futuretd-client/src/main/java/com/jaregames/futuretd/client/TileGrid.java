@@ -1,5 +1,7 @@
 package com.jaregames.futuretd.client;
 
+import com.jaregames.futuretd.client.input.Mouse;
+
 import java.awt.Graphics2D;
 
 import static com.jaregames.futuretd.client.GameWindow.camera;
@@ -44,16 +46,18 @@ public class TileGrid {
      * @param g2d
      */
     public void render(Graphics2D g2d) {// TODO: Investigate the wierd offset of the tiles in the left and the top of the window
-        
         int offsetTilesX = (int) (camera.getX() / Tile.SIZE);
         int offsetTilesY = (int) (camera.getY() / Tile.SIZE);
         
         g2d.drawString(offsetTilesX + ", " + offsetTilesY, 20, 20);
+        g2d.drawString("Mouse: X: " + Mouse.getX() + " Y: " + Mouse.getY(), 20, 30);
+        g2d.drawString("Camera: X: " + camera.getX() + " Y: " + camera.getY(), 20, 40);
         
         for (int i = Math.max(0, offsetTilesX); i < Math.min(maxTilesX + offsetTilesX, tiles.length); i++) {
             for (int j = Math.max(0, offsetTilesY); j < Math.min(maxTilesY + offsetTilesY, tiles[0].length); j++) {
                 tiles[i][j].render(g2d);
             }
         }
+    
     }
 }

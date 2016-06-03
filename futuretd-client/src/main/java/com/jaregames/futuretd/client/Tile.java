@@ -30,16 +30,14 @@ public class Tile {
     }
     
     public void render(Graphics2D g2d) {
-        g2d.setColor(Color.BLUE);
-        
-        if (isMouseover()) g2d.drawRect((int) x - (int) camera.getX(), (int) y - (int) camera.getY(), SIZE, SIZE);
+        if (isMouseover()) {
+            g2d.setColor(Color.BLUE);
+            g2d.drawRect((int) x - (int) camera.getX(), (int) y - (int) camera.getY(), SIZE, SIZE);
+        }
         
         if (tower != null) {
             tower.render(g2d);
         }
-        
-        g2d.drawString("Mouse: X: " + Mouse.getX() + " Y: " + Mouse.getY(), 20, 30);
-        g2d.drawString("Camera: X: " + camera.getX() + " Y: " + camera.getY(), 20, 40);
     }
     
     public void addTower(TowerType type) {
