@@ -29,9 +29,9 @@ public class GameMap {
             }
         }
         tileGrid = new TileGrid(50, 30);
-        tileGrid.getTileGrid()[1][1].addTower(TowerType.DEFAULT);
-        tileGrid.getTileGrid()[8][12].addTower(TowerType.DEFAULT);
-        tileGrid.getTileGrid()[9][23].addTower(TowerType.DEFAULT);
+        tileGrid.tiles[1][1].addTower(TowerType.DEFAULT);
+        tileGrid.tiles[8][12].addTower(TowerType.DEFAULT);
+        tileGrid.tiles[9][23].addTower(TowerType.DEFAULT);
     }
     
     public void update(double delta) {

@@ -55,7 +55,7 @@ class Window {
         
         GraphicsConfiguration graphicsConfig = screen.getDefaultConfiguration();
         screenSize = graphicsConfig.getBounds().getSize();
-        log.info("Screen size is " + screenSize.width + "x" + screenSize.height + "px");
+        log.info("Screen size: " + screenSize.width + "x" + screenSize.height + "px");
     }
     
     private void onResize() {

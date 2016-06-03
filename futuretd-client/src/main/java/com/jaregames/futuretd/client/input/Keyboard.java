@@ -107,16 +107,20 @@ public class Keyboard implements KeyListener {
     
     // === Listener methods ===
     
-    public synchronized void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        
+    public void keyPressed(KeyEvent e) {
+        setKeyPressed(e.getKeyCode());
+    }
+    
+    public synchronized void setKeyPressed(int keyCode) {
         if (keyCode >= 0 && keyCode < KEY_COUNT)
             currentKeys[keyCode] = true;
     }
     
-    public synchronized void keyReleased(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        
+    public void keyReleased(KeyEvent e) {
+        setKeyReleased(e.getKeyCode());
+    }
+    
+    public synchronized void setKeyReleased(int keyCode) {
         if (keyCode >= 0 && keyCode < KEY_COUNT)
             currentKeys[keyCode] = false;
     }

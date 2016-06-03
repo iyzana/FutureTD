@@ -28,6 +28,7 @@ public class GameWindow extends Window {
     
     private GameMap gameMap; // The map
     public static Camera camera; // The camera for maintaining the scrolling position
+    private double fps;
     
     /**
      * Create a new window, display it and start the gameLoop
@@ -78,6 +79,8 @@ public class GameWindow extends Window {
      * Initialize objects important for the game here
      */
     private void init() {
+        log.info("Initializing game");
+        
         gameMap = new GameMap();
         camera = new Camera();
         
@@ -90,7 +93,7 @@ public class GameWindow extends Window {
         lastUpdate = System.nanoTime();
         running = true;
         
-        log.info("Initialization complete");
+        log.info("Starting game");
     }
     
     /**
@@ -98,14 +101,14 @@ public class GameWindow extends Window {
      */
     private void update() {
         double delta = delta(); // Get the time since the last frame in seconds
-        log.trace(1 / delta + " fps"); // Print the current fps
+        fps = (fps * 29 + 1 / delta) / 30; // Average the current fps over 30 frames
         
         keyboard.poll(); // Read the newest keyboard data
         mouse.poll(); // Read the newest mouse data
         
         if(Keyboard.keyDownOnce(KeyEvent.VK_F11)) {
             toggleFullscreen();
-            keyboard.keyReleased(new KeyEvent(canvas, 0, 0, 0, KeyEvent.VK_F11));
+            keyboard.setKeyReleased(KeyEvent.VK_F11);
         }
         
         gameMap.update(delta);
@@ -121,6 +124,8 @@ public class GameWindow extends Window {
         
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the screen
         g.scale(scale, scale);
+    
+        g.drawString((int) fps + " fps", 1878, 10);
         
         // Render scene
         //g.fillRect(-(int) camera.getX(), -(int) camera.getY(), 100, 100);
@@ -149,6 +154,7 @@ public class GameWindow extends Window {
      */
     private boolean frame() {
         long diff = System.nanoTime() - gameTime;
+        if(diff > 4 * 7_000_000) gameTime += diff - 4 * 7_000_000;
         boolean frame = diff > 7_000_000;
         if (frame) gameTime += 7_000_000;
         return frame;
@@ -159,6 +165,6 @@ public class GameWindow extends Window {
         scale = Math.min(canvas.getWidth() / 1920.0, canvas.getHeight() / 1080.0);
         mouse.setScale(scale);
         
-        log.info("Scale factor " + scale);
+        log.info("Scale factor: " + scale);
     }
 }

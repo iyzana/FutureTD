@@ -15,7 +15,7 @@ public class TileGrid {
     int maxTilesX;
     int maxTilesY;
     
-    private Tile[][] tileGrid;
+    public final Tile[][] tiles;
     
     public TileGrid(int width, int height) {
         this.width = width;
@@ -24,12 +24,12 @@ public class TileGrid {
         //TODO: get the right dimensions for the game window
         maxTilesX = 1920 / Tile.SIZE + 2;
         maxTilesY = 1080 / Tile.SIZE + 2;
+    
+        tiles = new Tile[width][height];
         
-        tileGrid = new Tile[width][height];
-        
-        for (int i = 0; i < tileGrid.length; i++) {
-            for (int j = 0; j < tileGrid[0].length; j++) {
-                tileGrid[i][j] = new Tile(i * Tile.SIZE, j * Tile.SIZE);
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                tiles[i][j] = new Tile(i * Tile.SIZE, j * Tile.SIZE);
             }
         }
     }
@@ -50,14 +50,10 @@ public class TileGrid {
         
         g2d.drawString(offsetTilesX + ", " + offsetTilesY, 20, 20);
         
-        for (int i = Math.max(0, offsetTilesX); i < Math.min(maxTilesX + offsetTilesX, tileGrid.length); i++) {
-            for (int j = Math.max(0, offsetTilesY); j < Math.min(maxTilesY + offsetTilesY, tileGrid[0].length); j++) {
-                tileGrid[i][j].render(g2d);
+        for (int i = Math.max(0, offsetTilesX); i < Math.min(maxTilesX + offsetTilesX, tiles.length); i++) {
+            for (int j = Math.max(0, offsetTilesY); j < Math.min(maxTilesY + offsetTilesY, tiles[0].length); j++) {
+                tiles[i][j].render(g2d);
             }
         }
-    }
-    
-    public Tile[][] getTileGrid() {
-        return tileGrid;
     }
 }
