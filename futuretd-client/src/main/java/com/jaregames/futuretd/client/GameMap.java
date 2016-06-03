@@ -14,6 +14,7 @@ import static com.jaregames.futuretd.client.GameWindow.camera;
  */
 public class GameMap {
     private BufferedImage[][] mapInChunks;
+    private TileGrid tileGrid;
     
     public GameMap() {
         BufferedImage[] temp = ImageLoader.chunkify(ImageLoader.loadImage("chunkTest.png"), 6, 6);
@@ -25,6 +26,7 @@ public class GameMap {
                 counter++;
             }
         }
+        tileGrid = new TileGrid(50, 30);
     }
     
     public void update(double delta) {
@@ -32,14 +34,16 @@ public class GameMap {
     }
     
     public void render(Graphics2D g) {
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
-                int x = (1920 / 6) * i - (int) camera.getX();
-                int y = (1080 / 6) * j - (int) camera.getY();
-                
-                g.drawImage(mapInChunks[i][j], x, y, null);
-                g.drawRect(x, y, 1920 / 6, 1080 / 6);
-            }
-        }
+//        for (int i = 0; i < 6; i++) {
+//            for (int j = 0; j < 6; j++) {
+//                int x = (1920 / 6) * i - (int) camera.getX();
+//                int y = (1080 / 6) * j - (int) camera.getY();
+//
+//                g.drawImage(mapInChunks[i][j], x, y, null);
+//                g.drawRect(x, y, 1920 / 6, 1080 / 6);
+//            }
+//        }
+        tileGrid.render(g);
+
     }
 }

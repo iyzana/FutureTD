@@ -130,7 +130,7 @@ class GameWindow {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the screen
         
         // Render scene
-        g.fillRect(-(int) camera.getX(), -(int) camera.getY(), 100, 100);
+        //g.fillRect(-(int) camera.getX(), -(int) camera.getY(), 100, 100);
         gameMap.render(g);
         
         g.dispose(); // Invalidate the graphics for this frame
