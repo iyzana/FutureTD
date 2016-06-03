@@ -4,14 +4,8 @@ import com.jaregames.futuretd.client.input.Keyboard;
 import com.jaregames.futuretd.client.input.Mouse;
 import lombok.extern.log4j.Log4j2;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-import java.awt.Canvas;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferStrategy;
 
 /**
  * Project: futuretd
@@ -21,9 +15,7 @@ import java.awt.image.BufferStrategy;
  * @author René
  */
 @Log4j2
-public class GameWindow {
-    private Canvas canvas; // Drawing pane
-    private BufferStrategy bufferStrategy; // Drawing strategy
+public class GameWindow extends Window {
     private boolean running; // If the game is running
     
     private Keyboard keyboard; // Keyboard handler
@@ -32,6 +24,8 @@ public class GameWindow {
     private long lastUpdate; // time when the game was last updated
     private long gameTime; // time the game thinks currently is
     
+    private double scale;
+    
     private GameMap gameMap; // The map
     public static Camera camera; // The camera for maintaining the scrolling position
     
@@ -39,33 +33,25 @@ public class GameWindow {
      * Create a new window, display it and start the gameLoop
      */
     GameWindow() {
-        log.info("Application start");
-        
-        JFrame gameWindow = new JFrame("FutureTD"); // Create window with title 'FutureTD'
-        gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Exit application on window close
-        gameWindow.setUndecorated(true); // Remove window title bar
+        super();
         
         keyboard = new Keyboard(); // Create keyboard input handler
         mouse = new Mouse(); // Create mouse input handler
         
-        canvas = new Canvas(); // Create a drawing pane
-        canvas.setFocusTraversalKeysEnabled(false); // Pass 'tab' keystrokes through to our keyboard input handler
         canvas.addKeyListener(keyboard); // Add keyboard handler to our pane
         canvas.addMouseListener(mouse); // Add mouse click handler
         canvas.addMouseMotionListener(mouse); // Add mouse position handler
         canvas.addMouseWheelListener(mouse); // Add mouse wheel handler
-        gameWindow.add(canvas); // Put drawing pane in window
-        
-        GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(); // Get main screen
-        screen.setFullScreenWindow(gameWindow); // Set application to fullscreen
-        
-        canvas.requestFocusInWindow(); // Request keyboard focus
+    
+        enableFullscreen();
     
         log.info("Window created");
         
-        gameLoop(); // Run the game
-        
-        gameWindow.dispose(); // Dispose window if game finished
+        new Thread(() -> {
+            gameLoop(); // Run the game
+            
+            close(); // Close window when game finished
+        }, "gameLoop").start();
     }
     
     /**
@@ -87,18 +73,18 @@ public class GameWindow {
             }
         }
     }
- 
-     /**
+    
+    /**
      * Initialize objects important for the game here
      */
     private void init() {
         gameMap = new GameMap();
         camera = new Camera();
-    
+        
         // Set rendering technique to double buffered
         canvas.createBufferStrategy(2);
         bufferStrategy = canvas.getBufferStrategy();
-    
+        
         // Set initial values for constant fps
         gameTime = System.nanoTime();
         lastUpdate = System.nanoTime();
@@ -116,6 +102,12 @@ public class GameWindow {
         
         keyboard.poll(); // Read the newest keyboard data
         mouse.poll(); // Read the newest mouse data
+        
+        if(Keyboard.keyDownOnce(KeyEvent.VK_F11)) {
+            toggleFullscreen();
+            keyboard.keyReleased(new KeyEvent(canvas, 0, 0, 0, KeyEvent.VK_F11));
+        }
+        
         gameMap.update(delta);
         
         if (Keyboard.keyDown(KeyEvent.VK_ESCAPE)) running = false; // Quit game on press escape
@@ -128,6 +120,7 @@ public class GameWindow {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics(); // Get the graphics to draw with for this cycle
         
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the screen
+        g.scale(scale, scale);
         
         // Render scene
         //g.fillRect(-(int) camera.getX(), -(int) camera.getY(), 100, 100);
@@ -139,6 +132,7 @@ public class GameWindow {
     
     /**
      * Calculates the difference in time since this method was last called.
+     *
      * @return difference in seconds
      */
     private double delta() {
@@ -150,13 +144,21 @@ public class GameWindow {
     /**
      * Determines if a new frame shall be rendered.
      * If the previous frame lasted longer the next frame may come earlier.
-     * 
+     *
      * @return If a new frame shall be rendered
      */
     private boolean frame() {
         long diff = System.nanoTime() - gameTime;
         boolean frame = diff > 7_000_000;
-        if(frame) gameTime += 7_000_000;
+        if (frame) gameTime += 7_000_000;
         return frame;
+    }
+    
+    @Override
+    protected void onSizeChanged(int width, int height) {
+        scale = Math.min(canvas.getWidth() / 1920.0, canvas.getHeight() / 1080.0);
+        mouse.setScale(scale);
+        
+        log.info("Scale factor " + scale);
     }
 }

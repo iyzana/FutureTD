@@ -35,18 +35,15 @@ public class Mouse extends MouseAdapter {
     private boolean currentAvailable;
     
     // Polled mouse state
-    private static ButtonState[] buttons;
-    private static Point position;
+    private static ButtonState[] buttons = new ButtonState[BUTTON_COUNT];
+    private static Point position = new Point();
     private static int rotation;
     private static boolean available;
+    private static double scale = 1;
     
     public Mouse() {
         currentButtons = new boolean[BUTTON_COUNT];
-        buttons = new ButtonState[BUTTON_COUNT];
-    
         currentPosition = new Point();
-        position = new Point();
-        
         currentRotation = 0;
         
         for (int i = 0; i < BUTTON_COUNT; ++i) {
@@ -56,7 +53,7 @@ public class Mouse extends MouseAdapter {
     
     /**
      * Write the current state of the mouse to the polled mouse data
-     * 
+     * <p>
      * This method synchronizes the input with our game ticks
      */
     public synchronized void poll() {
@@ -69,11 +66,15 @@ public class Mouse extends MouseAdapter {
             }
         }
         
-        position.x = currentPosition.x;
-        position.y = currentPosition.y;
+        position.x = (int) (currentPosition.x / scale);
+        position.y = (int) (currentPosition.y / scale);
         
         rotation = currentRotation;
         available = currentAvailable;
+    }
+    
+    public void setScale(double scale) {
+        Mouse.scale = scale;
     }
     
     // @formatter:off

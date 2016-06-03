@@ -70,6 +70,14 @@ public class Keyboard implements KeyListener {
     }
     
     /**
+     * @param keyCode The key to check of: On of KeyEvent.VK_
+     * @return If the key has just changed from up to down
+     */
+    public static boolean keyDownOnce(int keyCode) {
+        return keys[keyCode] == KeyState.ONCE;
+    }
+    
+    /**
      * @return If the ctrl key is currently down
      */
     public static boolean ctrl() {
@@ -88,14 +96,6 @@ public class Keyboard implements KeyListener {
      */
     public static boolean shift() {
         return keyDown(KeyEvent.VK_SHIFT);
-    }
-    
-    /**
-     * @param keyCode The key to check of: On of KeyEvent.VK_
-     * @return If the key has just changed from up to down
-     */
-    public static boolean keyDownOnce(int keyCode) {
-        return keys[keyCode] == KeyState.ONCE;
     }
     
     /**
