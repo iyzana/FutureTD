@@ -13,7 +13,7 @@ import java.awt.event.KeyEvent;
  * @author René
  */
 @Getter
-class Camera {
+public class Camera {
     private double x;
     private double y;
     

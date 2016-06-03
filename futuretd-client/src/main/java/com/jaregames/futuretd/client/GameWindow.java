@@ -21,7 +21,7 @@ import java.awt.image.BufferStrategy;
  * @author René
  */
 @Log4j2
-class GameWindow {
+public class GameWindow {
     private Canvas canvas; // Drawing pane
     private BufferStrategy bufferStrategy; // Drawing strategy
     private boolean running; // If the game is running
@@ -33,7 +33,7 @@ class GameWindow {
     private long gameTime; // time the game thinks currently is
     
     private GameMap gameMap; // The map
-    static Camera camera; // The camera for maintaining the scrolling position
+    public static Camera camera; // The camera for maintaining the scrolling position
     
     /**
      * Create a new window, display it and start the gameLoop

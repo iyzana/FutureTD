@@ -22,8 +22,8 @@ public class TileGrid {
         this.height = height;
 
         //TODO: get the right dimensions for the game window
-        maxTilesX = 1920/Tile.SIZE;
-        maxTilesY = 1080/Tile.SIZE;
+        maxTilesX = 1920/Tile.SIZE+2;
+        maxTilesY = 1080/Tile.SIZE+2;
 
         tileGrid = new Tile[width][height];
 
@@ -50,10 +50,14 @@ public class TileGrid {
 
         g2d.drawString(offsetTilesX+", "+offsetTilesY, 20, 20);
 
-        for(int i = Math.max(0, offsetTilesX); i < tileGrid.length+Math.min(0, offsetTilesX); i++){
-            for(int j = Math.max(0, offsetTilesY); j < tileGrid[0].length+Math.min(0, offsetTilesY); j++){
+        for(int i = Math.max(0, offsetTilesX); i < Math.min(maxTilesX+offsetTilesX, tileGrid.length); i++){
+            for(int j = Math.max(0, offsetTilesY); j < Math.min(maxTilesY+offsetTilesY, tileGrid[0].length); j++){
                 tileGrid[i][j].render(g2d);
             }
         }
+    }
+
+    public Tile[][] getTileGrid() {
+        return tileGrid;
     }
 }

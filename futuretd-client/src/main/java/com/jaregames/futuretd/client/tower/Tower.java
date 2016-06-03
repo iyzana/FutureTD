@@ -1,28 +1,28 @@
 package com.jaregames.futuretd.client.tower;
 
-/**
- * Created by El Bergmann on 10.05.2016.
- */
-public interface Tower {
-    //// TODO: 10.05.2016  
 
-    /**
-     * Damage per hit
-     */
-    public double dmg();
+import java.awt.Graphics2D;
 
-    /**
-     * Rounds fired per minutes
-     */
-    public double rpm();
+import static com.jaregames.futuretd.client.GameWindow.camera;
 
-    /**
-     * Range of tower as Radius
-     */
-    public double range();
+public class Tower {
 
-    /**
-     * Contains a short description of the tower
-     */
-    public void description();
+    TowerType type;
+
+    int posX;
+    int posY;
+
+    public Tower(TowerType type, int posX, int posY){
+        this.type = type;
+        this.posX = posX;
+        this.posY = posY;
+    }
+
+    public void update(double delta){
+
+    }
+
+    public void render(Graphics2D g2d){
+        g2d.drawImage(type.baseImg, posX-(int)camera.getX(), posY-(int)camera.getY(), null);
+    }
 }
