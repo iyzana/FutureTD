@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.client;
+package com.jaregames.futuretd.client.game;
 
 import com.jaregames.futuretd.client.input.Keyboard;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class Camera {
     private int width;
     private int height;
     
-    Camera() {
+    public Camera() {
         x = 0;
         y = 0;
     }

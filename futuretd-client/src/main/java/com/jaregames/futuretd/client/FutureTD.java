@@ -1,5 +1,6 @@
 package com.jaregames.futuretd.client;
 
+import com.jaregames.futuretd.client.window.GameWindow;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.ZonedDateTime;

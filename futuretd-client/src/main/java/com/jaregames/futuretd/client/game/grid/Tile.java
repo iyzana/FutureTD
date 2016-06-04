@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.client;
+package com.jaregames.futuretd.client.game.grid;
 
 import com.jaregames.futuretd.client.input.Mouse;
 import com.jaregames.futuretd.client.tower.Tower;
@@ -7,7 +7,7 @@ import com.jaregames.futuretd.client.tower.TowerType;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import static com.jaregames.futuretd.client.GameWindow.camera;
+import static com.jaregames.futuretd.client.window.GameWindow.camera;
 
 /**
  * Created by René on 03.06.2016.
@@ -16,8 +16,8 @@ public class Tile {
     final static int SIZE = 50;
     
     // TODO: Think about saving grid pos instead of render pos
-    private double x;
-    private double y;
+    private final double x;
+    private final double y;
     
     // TODO: Tower takes 4 tiles of space
     private Tower tower;

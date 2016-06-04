@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.client;
+package com.jaregames.futuretd.client.assets;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -16,7 +16,7 @@ import java.net.URL;
  */
 @Log4j2
 public class ImageLoader {
-    private static BufferedImage errorImage = loadImage("daMalRendern.png");
+    private static final BufferedImage errorImage = loadImage("daMalRendern.png");
     
     public static BufferedImage loadImage(String name) {
         String path = "/images/" + name;
@@ -40,8 +40,6 @@ public class ImageLoader {
      * @return
      */
     public static BufferedImage[][] chunkify(BufferedImage image, int rows, int columns) {
-        int chunks = rows * columns;
-        
         int chunkWidth = image.getWidth() / columns; // determines the chunk width and height
         int chunkHeight = image.getHeight() / rows;
         

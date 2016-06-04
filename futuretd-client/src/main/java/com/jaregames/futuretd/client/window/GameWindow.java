@@ -1,9 +1,12 @@
-package com.jaregames.futuretd.client;
+package com.jaregames.futuretd.client.window;
 
+import com.jaregames.futuretd.client.game.Camera;
+import com.jaregames.futuretd.client.game.GameMap;
 import com.jaregames.futuretd.client.input.Keyboard;
 import com.jaregames.futuretd.client.input.Mouse;
 import lombok.extern.log4j.Log4j2;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
@@ -24,8 +27,8 @@ public class GameWindow extends Window {
     
     private boolean running; // If the game is running
     
-    private Keyboard keyboard; // Keyboard handler
-    private Mouse mouse; // Keyboard handler
+    private final Keyboard keyboard; // Keyboard handler
+    private final Mouse mouse; // Keyboard handler
     
     private long lastUpdate; // time when the game was last updated
     private long gameTime; // time the game thinks currently is
@@ -41,7 +44,7 @@ public class GameWindow extends Window {
     /**
      * Create a new window, display it and start the gameLoop
      */
-    GameWindow() {
+    public GameWindow() {
         super();
         
         keyboard = new Keyboard(); // Create keyboard input handler
@@ -139,13 +142,14 @@ public class GameWindow extends Window {
         g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the screen
         g.scale(scale, scale);
         
-        g.drawString((int) fps + " fps", 1878, 10);
-        
         g.setRenderingHints(renderingHints);
         
         // Render scene
         //g.fillRect(-(int) camera.getX(), -(int) camera.getY(), 100, 100);
         gameMap.render(g);
+    
+        g.setColor(Color.black);
+        g.drawString((int) fps + " fps", 1860, 20);
         
         g.dispose(); // Invalidate the graphics for this frame
         bufferStrategy.show(); // Show the rendered frame on the screen
@@ -180,8 +184,8 @@ public class GameWindow extends Window {
     @Override
     protected void onSizeChanged(int width, int height) {
         // TODO: Screen translation on non 16:9 screens
-        double scaleX = canvas.getWidth() / 1920.0;
-        double scaleY = canvas.getHeight() / 1080.0;
+        double scaleX = width / 1920.0;
+        double scaleY = height / 1080.0;
         scale = Math.max(scaleX, scaleY);
         mouse.setScale(scale);
         

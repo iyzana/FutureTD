@@ -1,11 +1,13 @@
-package com.jaregames.futuretd.client;
+package com.jaregames.futuretd.client.game;
 
+import com.jaregames.futuretd.client.assets.ImageLoader;
+import com.jaregames.futuretd.client.game.grid.TileGrid;
 import com.jaregames.futuretd.client.tower.TowerType;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import static com.jaregames.futuretd.client.GameWindow.camera;
+import static com.jaregames.futuretd.client.window.GameWindow.camera;
 
 /**
  * Project: futuretd
@@ -15,8 +17,8 @@ import static com.jaregames.futuretd.client.GameWindow.camera;
  * @author René
  */
 public class GameMap {
-    private BufferedImage[][] mapInChunks;
-    private TileGrid tileGrid;
+    private final BufferedImage[][] mapInChunks;
+    private final TileGrid tileGrid;
     
     public GameMap() {
         mapInChunks = ImageLoader.chunkify(ImageLoader.loadImage("chunkTest.png"), 6, 6);

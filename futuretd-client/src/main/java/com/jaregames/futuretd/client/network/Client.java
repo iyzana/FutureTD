@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.client;
+package com.jaregames.futuretd.client.network;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

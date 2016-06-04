@@ -3,13 +3,13 @@ package com.jaregames.futuretd.client.tower;
 
 import java.awt.Graphics2D;
 
-import static com.jaregames.futuretd.client.GameWindow.camera;
+import static com.jaregames.futuretd.client.window.GameWindow.camera;
 
 public class Tower {
-    private TowerType type;
+    private final TowerType type;
     
-    private int posX;
-    private int posY;
+    private final int posX;
+    private final int posY;
     
     public Tower(TowerType type, int posX, int posY) {
         this.type = type;

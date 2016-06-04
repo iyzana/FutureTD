@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.client;
+package com.jaregames.futuretd.client.window;
 
 import com.jaregames.futuretd.client.helper.ComponentListenerResizeHelper;
 import com.jaregames.futuretd.client.helper.MouseListenerEnteredHelper;
@@ -23,12 +23,12 @@ import java.awt.image.BufferStrategy;
  */
 @Log4j2
 abstract class Window {
-    Canvas canvas; // Drawing pane
+    final Canvas canvas; // Drawing pane
     BufferStrategy bufferStrategy; // Drawing strategy
     
     private final JFrame gameWindow;
     
-    private Dimension screenSize;
+    private final Dimension screenSize;
     private final GraphicsDevice screen;
     
     private boolean resizeFlag;

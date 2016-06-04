@@ -1,6 +1,6 @@
 package com.jaregames.futuretd.client.tower;
 
-import com.jaregames.futuretd.client.ImageLoader;
+import com.jaregames.futuretd.client.assets.ImageLoader;
 
 import java.awt.image.BufferedImage;
 
@@ -12,7 +12,7 @@ public enum TowerType {
     
     String name;
     
-    BufferedImage baseImg;
+    final BufferedImage baseImg;
     BufferedImage turnerImg;
     
     TowerType(String name) {

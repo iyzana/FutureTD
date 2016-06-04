@@ -1,10 +1,10 @@
-package com.jaregames.futuretd.client;
+package com.jaregames.futuretd.client.game.grid;
 
 import com.jaregames.futuretd.client.input.Mouse;
 
 import java.awt.Graphics2D;
 
-import static com.jaregames.futuretd.client.GameWindow.camera;
+import static com.jaregames.futuretd.client.window.GameWindow.camera;
 
 /**
  * Created by René on 03.06.2016.
