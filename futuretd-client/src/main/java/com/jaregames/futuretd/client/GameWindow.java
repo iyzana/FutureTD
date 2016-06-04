@@ -19,6 +19,9 @@ import java.util.Map;
  */
 @Log4j2
 public class GameWindow extends Window {
+    private static final int prefFps = 144;
+    private static final int minFrameTime = 1000000000 / prefFps;
+    
     private boolean running; // If the game is running
     
     private Keyboard keyboard; // Keyboard handler
@@ -53,11 +56,10 @@ public class GameWindow extends Window {
         
         log.info("Window created");
         
-        new Thread(() -> {
-            gameLoop(); // Run the game
-            
-            close(); // Close window when game finished
-        }, "gameLoop").start();
+        gameLoop(); // Run the game
+        
+        log.info("Closing application");
+        closeWindow();
     }
     
     /**
@@ -73,7 +75,7 @@ public class GameWindow extends Window {
             }
             
             try {
-                Thread.sleep(4);
+                Thread.sleep(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -92,12 +94,12 @@ public class GameWindow extends Window {
         // Set rendering technique to double buffered
         canvas.createBufferStrategy(2);
         bufferStrategy = canvas.getBufferStrategy();
-    
+        
         renderingHints = new HashMap<>(6);
         renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         renderingHints.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        renderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         
         // Set initial values for constant fps
@@ -125,7 +127,7 @@ public class GameWindow extends Window {
         
         gameMap.update(delta);
         
-        if (Keyboard.keyDown(KeyEvent.VK_ESCAPE)) running = false; // Quit game on press escape
+        if (Keyboard.keyDown(KeyEvent.VK_ESCAPE)) onClose(); // Quit game on press escape
     }
     
     /**
@@ -168,17 +170,28 @@ public class GameWindow extends Window {
      */
     private boolean frame() {
         long diff = System.nanoTime() - gameTime;
-        if (diff > 4 * 7_000_000) gameTime += diff - 4 * 7_000_000;
-        boolean frame = diff > 7_000_000;
-        if (frame) gameTime += 7_000_000;
+        if (diff > 4 * minFrameTime) gameTime += diff - 4 * minFrameTime;
+        if (diff > 16 * minFrameTime) log.warn(diff / minFrameTime + " frames behind");
+        boolean frame = diff > minFrameTime;
+        if (frame) gameTime += minFrameTime;
         return frame;
     }
     
     @Override
     protected void onSizeChanged(int width, int height) {
-        scale = Math.min(canvas.getWidth() / 1920.0, canvas.getHeight() / 1080.0);
+        // TODO: Screen translation on non 16:9 screens
+        double scaleX = canvas.getWidth() / 1920.0;
+        double scaleY = canvas.getHeight() / 1080.0;
+        scale = Math.max(scaleX, scaleY);
         mouse.setScale(scale);
         
-        log.info("Scale factor: " + scale);
+        log.debug("Scale factor: " + scale);
+    }
+    
+    @Override
+    void onClose() {
+        log.info("Window close requested");
+        
+        running = false;
     }
 }

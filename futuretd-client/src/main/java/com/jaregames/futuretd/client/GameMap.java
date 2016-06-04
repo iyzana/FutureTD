@@ -19,16 +19,9 @@ public class GameMap {
     private TileGrid tileGrid;
     
     public GameMap() {
-        BufferedImage[] temp = ImageLoader.chunkify(ImageLoader.loadImage("chunkTest.png"), 6, 6);
-        int counter = 0;
-        mapInChunks = new BufferedImage[6][6];
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
-                mapInChunks[j][i] = temp[counter];
-                counter++;
-            }
-        }
-        tileGrid = new TileGrid(50, 30);
+        mapInChunks = ImageLoader.chunkify(ImageLoader.loadImage("chunkTest.png"), 6, 6);
+        
+        tileGrid = new TileGrid(500, 300);
         tileGrid.tiles[1][1].addTower(TowerType.DEFAULT);
         tileGrid.tiles[8][12].addTower(TowerType.DEFAULT);
         tileGrid.tiles[9][23].addTower(TowerType.DEFAULT);
@@ -36,6 +29,8 @@ public class GameMap {
     
     public void update(double delta) {
         camera.update(delta);
+        
+        tileGrid.update(delta);
     }
     
     public void render(Graphics2D g) {
@@ -49,6 +44,5 @@ public class GameMap {
 //            }
 //        }
         tileGrid.render(g);
-
     }
 }

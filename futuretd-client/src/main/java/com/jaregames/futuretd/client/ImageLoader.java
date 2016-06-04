@@ -1,8 +1,11 @@
 package com.jaregames.futuretd.client;
 
+import lombok.extern.log4j.Log4j2;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.net.URL;
 
 /**
  * Project: futuretd
@@ -11,15 +14,21 @@ import java.io.IOException;
  *
  * @author René
  */
+@Log4j2
 public class ImageLoader {
+    private static BufferedImage errorImage = loadImage("daMalRendern.png");
+    
     public static BufferedImage loadImage(String name) {
-        BufferedImage img = null;
+        String path = "/images/" + name;
         try {
-            img = ImageIO.read(ImageLoader.class.getClass().getResourceAsStream("/images/" + name));
-        } catch (IOException e) {
-            e.printStackTrace();
+            URL resource = ImageLoader.class.getClass().getResource(path);
+            if (resource == null) throw new FileNotFoundException("File \"" + path + "\" does not exist");
+            
+            return ImageIO.read(resource);
+        } catch (Throwable e) {
+            log.error("Error loading image " + name, e);
+            return errorImage;
         }
-        return img;
     }
     
     /**
@@ -30,24 +39,16 @@ public class ImageLoader {
      * @param columns
      * @return
      */
-    public static BufferedImage[] chunkify(BufferedImage image, int rows, int columns) {
+    public static BufferedImage[][] chunkify(BufferedImage image, int rows, int columns) {
         int chunks = rows * columns;
         
         int chunkWidth = image.getWidth() / columns; // determines the chunk width and height
         int chunkHeight = image.getHeight() / rows;
-        int count = 0;
-        BufferedImage imgs[] = new BufferedImage[chunks]; //Image array to hold image chunks
+        
+        BufferedImage imgs[][] = new BufferedImage[rows][columns]; //Image array to hold image chunks
         for (int x = 0; x < rows; x++) {
             for (int y = 0; y < columns; y++) {
-                // java has a method for this :)
-                imgs[count++] = image.getSubimage(chunkWidth * y, chunkHeight * x, chunkWidth, chunkHeight);
-                
-                //Initialize the image array with image chunks
-                //                imgs[count] = new BufferedImage(chunkWidth, chunkHeight, image.getType());
-                // draws the image chunk
-                //                Graphics2D gr = imgs[count++].createGraphics();
-                //                gr.drawImage(image, 0, 0, chunkWidth, chunkHeight, chunkWidth * y, chunkHeight * x, chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight, null);
-                //                gr.dispose();
+                imgs[x][y] = image.getSubimage(chunkWidth * x, chunkHeight * y, chunkWidth, chunkHeight);
             }
         }
         return imgs;

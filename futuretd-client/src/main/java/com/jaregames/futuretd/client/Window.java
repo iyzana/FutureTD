@@ -2,6 +2,7 @@ package com.jaregames.futuretd.client;
 
 import com.jaregames.futuretd.client.helper.ComponentListenerResizeHelper;
 import com.jaregames.futuretd.client.helper.MouseListenerEnteredHelper;
+import com.jaregames.futuretd.client.helper.WindowClosingListener;
 import lombok.extern.log4j.Log4j2;
 
 import javax.swing.JFrame;
@@ -21,7 +22,7 @@ import java.awt.image.BufferStrategy;
  * @author Jannis
  */
 @Log4j2
-class Window {
+abstract class Window {
     Canvas canvas; // Drawing pane
     BufferStrategy bufferStrategy; // Drawing strategy
     
@@ -31,14 +32,16 @@ class Window {
     private final GraphicsDevice screen;
     
     private boolean resizeFlag;
-    private Dimension previousDimension;
+    private Dimension previousDimension = new Dimension(-1, -1);
     
     Window() {
-        log.info("Application start");
+        log.info("Creating window");
         
         // Create window with title 'FutureTD'
         gameWindow = new JFrame("FutureTD");
-        gameWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Exit application on window close
+        gameWindow.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    
+        gameWindow.addWindowListener((WindowClosingListener) e -> onClose()); // Inform about window close request
         
         canvas = new Canvas(); // Create a drawing pane
         canvas.setFocusTraversalKeysEnabled(false); // Pass 'tab' keystrokes through to our keyboard input handler
@@ -46,7 +49,7 @@ class Window {
         
         canvas.addComponentListener((ComponentListenerResizeHelper) e -> resizeFlag = true);
         canvas.addMouseListener((MouseListenerEnteredHelper) e -> {
-            if (resizeFlag) onResize();
+            if (resizeFlag) onResize(true);
             resizeFlag = false;
         });
         
@@ -58,72 +61,83 @@ class Window {
         log.info("Screen size: " + screenSize.width + "x" + screenSize.height + "px");
     }
     
-    private void onResize() {
+    private void onResize(boolean forceFormat) {
         if (canvas.getSize().equals(previousDimension)) return;
         
-        log.debug("resize");
-        
-        int width;
-        int height;
-    
-        int dw = (int) (canvas.getWidth() - previousDimension.getWidth());
-        int dh = (int) (canvas.getHeight() - previousDimension.getHeight());
-        
-        if (Math.abs(dw) > Math.abs(dh)) {
-            width = canvas.getWidth();
-            height = width * 9 / 16;
-        } else {
-            height = canvas.getHeight();
-            width = height * 16 / 9;
+        if (forceFormat) {
+            log.debug("resize");
+            
+            int width;
+            int height;
+            
+            int dw = (int) (canvas.getWidth() - previousDimension.getWidth());
+            int dh = (int) (canvas.getHeight() - previousDimension.getHeight());
+            
+            if (Math.abs(dw) > Math.abs(dh)) {
+                width = canvas.getWidth();
+                height = width * 9 / 16;
+            } else {
+                height = canvas.getHeight();
+                width = height * 16 / 9;
+            }
+            
+            canvas.setSize(width, height);
         }
         
-        canvas.setSize(width, height);
-        onSizeChanged(width, height);
-    
+        onSizeChanged(canvas.getWidth(), canvas.getHeight());
+        
         previousDimension = canvas.getSize();
         
         gameWindow.pack();
     }
     
-    void onSizeChanged(int width, int height) {
-        
-    }
+    abstract void onSizeChanged(int width, int height);
     
     void toggleFullscreen() {
         if (gameWindow.isUndecorated()) disableFullscreen();
         else enableFullscreen();
     }
     
+    /**
+     * Put this window into fullscreen mode
+     */
     void enableFullscreen() {
-        gameWindow.dispose();
+        log.debug("fullscreen mode");
+        
+        gameWindow.dispose(); // Temporarily close window for changing its state
         gameWindow.setUndecorated(true); // Remove window title bar
         screen.setFullScreenWindow(gameWindow); // Set application to fullscreen
         
-        previousDimension = canvas.getSize();
-        onSizeChanged(canvas.getWidth(), canvas.getHeight());
-        gameWindow.setVisible(true);
-    
+        onResize(false);
+        
         canvas.requestFocusInWindow(); // Request keyboard focus
     }
     
+    /**
+     * Put this window into windowed mode
+     */
     void disableFullscreen() {
-        gameWindow.dispose();
-        screen.setFullScreenWindow(null);
-        gameWindow.setUndecorated(false);
+        log.debug("windowed mode");
         
-        int width = screenSize.width;
-        int height = screenSize.height / 2;
-        canvas.setSize(width, height);
+        gameWindow.dispose(); // Temporarily close window for changing its state
+        screen.setFullScreenWindow(null); // Set application to windowed
+        gameWindow.setUndecorated(false); // Add window title bar
         
-        onResize();
+        int width = screenSize.width / 2;
+        int height = width * 9 / 16;
+        canvas.setSize(width, height); // Set size to half screen
+        
+        onResize(false);
         
         gameWindow.setLocationRelativeTo(null);
         gameWindow.setVisible(true);
-    
+        
         canvas.requestFocusInWindow(); // Request keyboard focus
     }
     
-    void close() {
+    void closeWindow() {
         gameWindow.dispose();
     }
+    
+    abstract void onClose();
 }

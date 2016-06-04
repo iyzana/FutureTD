@@ -9,13 +9,13 @@ import java.awt.image.BufferedImage;
  */
 public enum TowerType {
     DEFAULT("Default");
-
+    
     String name;
-
+    
     BufferedImage baseImg;
     BufferedImage turnerImg;
-
-    TowerType(String name){
-        baseImg = ImageLoader.loadImage(name+"TowerBase.png");
+    
+    TowerType(String name) {
+        baseImg = ImageLoader.loadImage(name + "TowerBase.png");
     }
 }
