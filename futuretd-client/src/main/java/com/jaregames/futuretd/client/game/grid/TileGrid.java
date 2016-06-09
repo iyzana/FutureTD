@@ -26,7 +26,7 @@ public class TileGrid {
         
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
-                tiles[i][j] = new Tile(i * Tile.SIZE, j * Tile.SIZE);
+                tiles[i][j] = new Tile(i, j, this);
             }
         }
     }
@@ -57,5 +57,9 @@ public class TileGrid {
                 tiles[x][y].render(g);
             }
         }
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
     }
 }

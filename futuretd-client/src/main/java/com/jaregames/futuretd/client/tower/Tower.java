@@ -32,4 +32,8 @@ public class Tower {
     private int renderY() {
         return posY - (int) camera.getY();
     }
+
+    public TowerType getType() {
+        return type;
+    }
 }
