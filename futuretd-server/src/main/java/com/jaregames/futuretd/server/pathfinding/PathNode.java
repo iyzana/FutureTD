@@ -32,7 +32,7 @@ class PathNode extends SimpleNode {
      * @return The steps needed to get to this node from the starting point
      */
     float getSteps() {
-        if (steps < 0) return steps;
+        if (steps >= 0) return steps;
         if (parent == null) return steps = 0;
         float weight = getX() - parent.getX() == 0 || getY() - parent.getY() == 0 ? 1 : 1.1f;
         return steps = parent.getSteps() + weight;

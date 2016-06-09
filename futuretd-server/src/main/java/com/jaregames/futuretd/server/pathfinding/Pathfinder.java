@@ -73,14 +73,9 @@ public class Pathfinder {
             else if (distance > minDistance * maxDistance) // If distance is far greater stop searching
                 throw new NoPathFoundException("No easy path between start and end");
             
-            List<PathNode> neighbors = neighbors(map, current) // Build the neighbors
-                    .stream()
-                    .filter(node -> !closed.contains(node)) // Filter already visited nodes
-                    .map(node -> PathNode.of(node, current)) // Map them to PathNodes
-                    .collect(Collectors.toList());
-            
-            closed.addAll(neighbors); // Add new nodes to closed and opened list
-            open.addAll(neighbors);
+            neighbors(map, current).stream() // Build the neighbors
+                    .filter(closed::add) // Filter already visited nodes and add new nodes to closed list
+                    .forEach(open::add); // Add new nodes to opened list
         }
         
         throw new NoPathFoundException("No path between start and end");
@@ -154,8 +149,8 @@ public class Pathfinder {
      * @param node The node to build neighbors for
      * @return The nodes 8 filtered neighbors
      */
-    private static List<Node> neighbors(TiledMap map, Node node) {
-        List<Node> neighbors = new ArrayList<>(9);
+    private static List<PathNode> neighbors(TiledMap map, PathNode node) {
+        List<PathNode> neighbors = new ArrayList<>(9);
         
         int x = node.getX();
         int y = node.getY();
@@ -172,7 +167,7 @@ public class Pathfinder {
                         if (!map.getNodeAt(cx, y).isTraversable()) continue;
                         if (!map.getNodeAt(x, cy).isTraversable()) continue;
                     }
-                    neighbors.add(SimpleNode.of(cx, cy));
+                    neighbors.add(PathNode.of(cx, cy, node));
                 }
             }
         }
@@ -187,13 +182,15 @@ public class Pathfinder {
      * @return The path from start node to given goal node
      */
     private static List<Node> backtrack(PathNode node) {
-        List<Node> path = new ArrayList<>(50);
+        // TODO: Use if possible: Stream.iterate(node, PathNode::getParent);
         
-        PathNode current = node;
-        path.add(current);
-        while (current.getParent() != null) {
-            current = current.getParent();
+        List<Node> path = new ArrayList<>(50);
+        path.add(node);
+        
+        PathNode current = node.getParent();
+        while (current != null) {
             path.add(current);
+            current = current.getParent();
         }
         
         Collections.reverse(path);

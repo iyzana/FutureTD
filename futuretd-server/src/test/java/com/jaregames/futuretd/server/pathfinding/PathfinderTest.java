@@ -2,8 +2,6 @@ package com.jaregames.futuretd.server.pathfinding;
 
 import org.junit.Test;
 
-import java.util.List;
-
 /**
  * Project: futuretd
  * <p/>
@@ -15,13 +13,16 @@ public class PathfinderTest {
     
     @Test
     public void findPath() throws Exception {
-        Thread.sleep(10000);
+        //        Thread.sleep(10000);
         double duration = 0;
+        double durationGeneration = 0;
         int validPaths = 0;
+        
         for (int i = 0; i < 100; i++) {
+            long startGeneration = System.nanoTime();
             System.out.println("run " + i);
-            int w = 1000;
-            int h = 1000;
+            int w = 300;
+            int h = 500;
             TraversableNode[][] nodeArray = new TraversableNode[w][h];
             for (int x = 0; x < w; x++) {
                 for (int y = 0; y < h; y++) {
@@ -33,12 +34,12 @@ public class PathfinderTest {
                         public boolean isTraversable() {
                             return traversable;
                         }
-    
+                        
                         @Override
                         public int getX() {
                             return finalX;
                         }
-    
+                        
                         @Override
                         public int getY() {
                             return finalY;
@@ -64,12 +65,13 @@ public class PathfinderTest {
             };
             Node start = SimpleNode.of(0, 0);
             Node end = SimpleNode.of(map.getWidth() - 1, map.getHeight() - 1);
+            durationGeneration += System.nanoTime() - startGeneration;
             
-            long startTime = System.nanoTime();
             try {
-//                System.out.println("pathfinding");
-                List<Node> nodes = Pathfinder.findPath(map, start, end);
-                duration += (System.nanoTime() - startTime) / 1000000000.0;
+                //                System.out.println("pathfinding");
+                long startTime = System.nanoTime();
+                Pathfinder.findPath(map, start, end);
+                duration += System.nanoTime() - startTime;
                 validPaths++;
                 
                 //            String path = nodes.stream().map(Object::toString).collect(Collectors.joining(" -> "));
@@ -100,6 +102,7 @@ public class PathfinderTest {
             }
         }
         System.out.println("valid paths found " + validPaths);
-        System.out.println("time " + duration + " s");
+        System.out.println("time " + (duration / 1000000000.0) + " s");
+        System.out.println("generation " + (durationGeneration / 1000000000.0) + " s");
     }
 }

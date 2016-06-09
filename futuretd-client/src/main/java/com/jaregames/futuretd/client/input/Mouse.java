@@ -85,7 +85,7 @@ public class Mouse extends MouseAdapter {
         return isDown(MouseEvent.BUTTON3);
     }
     public static boolean isDown(int button) {
-        return buttons[button] == ButtonState.DOWN || buttons[1] == ButtonState.PRESSED;
+        return buttons[button] == ButtonState.DOWN || isDownOnce(button);
     }
     
     public static boolean isDownOnce() {
@@ -105,7 +105,7 @@ public class Mouse extends MouseAdapter {
         return isUp(MouseEvent.BUTTON3);
     }
     public static boolean isUp(int button) {
-        return buttons[button] == ButtonState.UP || buttons[1] == ButtonState.RELEASED;
+        return buttons[button] == ButtonState.UP || isUpOnce(button);
     }
     
     public static boolean isUpOnce() {
