@@ -10,13 +10,14 @@ import java.awt.image.BufferedImage;
 public enum TowerType {
     DEFAULT("Default", 2);
     
-    String name;
-    public int sizeInTiles;
+    public final String name;
+    public final BufferedImage baseImg;
+    public final int sizeInTiles;
     
-    final BufferedImage baseImg;
-    BufferedImage turnerImg;
+    //    BufferedImage turnerImg;
     
     TowerType(String name, int sizeInTiles) {
+        this.name = name;
         baseImg = ImageLoader.loadImage(name + "TowerBase.png");
         this.sizeInTiles = sizeInTiles;
     }
