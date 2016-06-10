@@ -2,10 +2,10 @@ package com.jaregames.futuretd.server.tower;
 
 
 public class Tower {
-    private final TowerType type;
+    public final TowerType type;
     
-    private final int posX;
-    private final int posY;
+    public final int posX;
+    public final int posY;
     
     public Tower(TowerType type, int posX, int posY) {
         this.type = type;
@@ -15,9 +15,5 @@ public class Tower {
     
     public void update(double delta) {
         
-    }
-
-    public TowerType getType() {
-        return type;
     }
 }

@@ -12,52 +12,50 @@ import java.util.Queue;
  */
 @Log4j2
 public class FutureTDServerManager {
-
-    GameMap gameMap;
-    Queue inputQueue;
-    FutureTdServer server;
-
+    private GameMap gameMap;
+    private Queue inputQueue;
+    private FutureTdServer server;
+    
     private static final int prefFps = 64;
     private static final int minFrameTime = 1000000000 / prefFps;
     private long gameTime; // time the game thinks currently is
-
+    
     private long lastUpdate; // time when the game was last updated
     private boolean running;
-
-    FutureTDServerManager(){
+    
+    private FutureTDServerManager() {
         log.info("Waiting for client...");
         establishConnection();
         gameLoop();
     }
-
-
+    
     public static void main(String[] args) {
         new FutureTDServerManager();
     }
-
+    
     private void update() {
         double delta = delta(); // Get the time since the last frame in seconds
+        
         gameMap.update(delta);
-        if(!server.isSessionEnded()){
+        
+        if (!server.isSessionEnded()) {
             checkInputQueue();
         }
-
-
     }
-
+    
     private double delta() {
         long diff = System.nanoTime() - lastUpdate;
         lastUpdate += diff;
         return diff / 1_000_000_000.0;
     }
-
+    
     private void gameLoop() {
         init();
         while (running) {
             if (frame()) {
                 update();
             }
-
+            
             try {
                 Thread.sleep(2);
             } catch (InterruptedException e) {
@@ -65,44 +63,35 @@ public class FutureTDServerManager {
             }
         }
     }
+    
     private void init() {
         log.info("Initializing game");
-
-        gameMap = new GameMap(server);
-
+        
+        GameMap.server = server;
+        gameMap = new GameMap();
+        
         // Set initial values for constant fps
         gameTime = System.nanoTime();
         lastUpdate = System.nanoTime();
         running = true;
-
+        
         log.info("Starting game");
     }
-
-    private void establishConnection(){
+    
+    private void establishConnection() {
         server = new FutureTdServer();
-        while(!server.isClientConnected()){
+        
+        while (!server.isClientConnected()) {
             try {
                 Thread.sleep(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        
         inputQueue = server.getInputQueue();
     }
-
-    private void checkInputQueue(){
-
-            Object o = inputQueue.poll();
-            if(o == null){
-                return;
-            }
-            if(o instanceof BuildTower){
-                BuildTower buildTower = (BuildTower) o;
-                handleBuildTower(buildTower);
-            }
-
-    }
-
+    
     private boolean frame() {
         long diff = System.nanoTime() - gameTime;
         if (diff > 4 * minFrameTime) gameTime += diff - 4 * minFrameTime;
@@ -111,9 +100,22 @@ public class FutureTDServerManager {
         if (frame) gameTime += minFrameTime;
         return frame;
     }
-
-    public void handleBuildTower(BuildTower buildTower){
+    
+    private void checkInputQueue() {
+        Object o = inputQueue.poll();
+        
+        if (o == null) {
+            return;
+        }
+        
+        if (o instanceof BuildTower) {
+            BuildTower buildTower = (BuildTower) o;
+            handleBuildTower(buildTower);
+        }
+    }
+    
+    private void handleBuildTower(BuildTower buildTower) {
         log.info("Tower must be build!");
-        gameMap.grid.getTileAt(buildTower.posX, buildTower.posY).addTower(TowerType.getTypeFromID(buildTower.towertypeID));
+        gameMap.grid.getTileAt(buildTower.posX, buildTower.posY).addTower(TowerType.getTypeFromID(buildTower.towerTypeID));
     }
 }

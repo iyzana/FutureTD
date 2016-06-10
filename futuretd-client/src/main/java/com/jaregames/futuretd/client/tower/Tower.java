@@ -6,10 +6,10 @@ import java.awt.Graphics2D;
 import static com.jaregames.futuretd.client.window.GameWindow.camera;
 
 public class Tower {
-    private final TowerType type;
+    public final TowerType type;
     
-    private final int posX;
-    private final int posY;
+    public final int posX;
+    public final int posY;
     
     public Tower(TowerType type, int posX, int posY) {
         this.type = type;
@@ -31,9 +31,5 @@ public class Tower {
     
     private int renderY() {
         return posY - (int) camera.getY();
-    }
-
-    public TowerType getType() {
-        return type;
     }
 }

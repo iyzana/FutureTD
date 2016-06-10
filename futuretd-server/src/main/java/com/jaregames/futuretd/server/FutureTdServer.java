@@ -21,29 +21,29 @@ import java.util.Queue;
 @SuppressWarnings("Duplicates")
 @Log4j2
 public class FutureTdServer extends Thread {
-
+    
     private ObjectInputStream in;
     private ObjectOutputStream out;
-
+    
     private ServerSocket serverSocket;
     private Socket clientSocket;
-
+    
     private boolean gameStart;
     private boolean clientConnected;
     private boolean sessionEnded;
-
+    
     private Queue<Serializable> inputQueue;
-
+    
     FutureTdServer() {
         gameStart = false;
         clientConnected = false;
         clientSocket = new Socket();
-
+        
         inputQueue = new LinkedList<>();
-
-        this.start();
+        
+        start();
     }
-
+    
     @Override
     public void run() {
         try {
@@ -52,57 +52,53 @@ public class FutureTdServer extends Thread {
             e.printStackTrace();
             sessionEnded = true;
         }
-
-        ObjectInputStream in = null;
-
+        
         try {
             clientSocket = serverSocket.accept();
-            log.info("Client connected!: "+clientSocket.getInetAddress());
-
+            log.info("Client connected!: " + clientSocket.getInetAddress());
+            
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             out.flush();
             in = new ObjectInputStream(clientSocket.getInputStream());
             clientConnected = true;
-
         } catch (IOException e) {
             e.printStackTrace();
             sessionEnded = true;
         }
-
+        
         while (!sessionEnded) {
-            Object o = null;
             try {
                 inputQueue.add((Serializable) in.readObject());
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
-
+        
         try {
             clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    
     public boolean send(Serializable s) {
-            try {
-                out.writeObject(s);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
+        try {
+            out.writeObject(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
-
-    public Queue<Serializable> getInputQueue(){
+    
+    public Queue<Serializable> getInputQueue() {
         return inputQueue;
     }
-
+    
     public boolean isClientConnected() {
         return clientConnected;
     }
-
+    
     public boolean isSessionEnded() {
         return sessionEnded;
     }

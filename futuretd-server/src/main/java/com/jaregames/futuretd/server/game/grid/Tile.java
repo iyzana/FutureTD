@@ -11,10 +11,10 @@ import com.jaregames.futuretd.server.tower.TowerType;
  */
 public class Tile {
     final static int SIZE = 25;
-
+    
     private final int x;
     private final int y;
-
+    
     private Tower tower;
     private TileGrid parentGrid;
     private boolean towerRoot;// if the tile ist the root tile for a tower
@@ -27,46 +27,49 @@ public class Tile {
     }
     
     public void update(double delta) {
-
+        
     }
-
+    
     
     public void addTower(TowerType type) {
-        //check if near Tiles have a Tower TODO: Muss mit variabelen Towergrößen funktionieren!
-        boolean spaceFree = true;
-        spaceFree = !parentGrid.getTiles()[x+1][y].hasTower() && !parentGrid.getTiles()[x+1][y+1].hasTower() && !parentGrid.getTiles()[x][y+1].hasTower();
-
-        if(this.tower==null && spaceFree){
-            this.tower = new Tower(type, x * Tile.SIZE, y * Tile.SIZE);
-            parentGrid.getTiles()[x+1][y].addTower(tower);
-            parentGrid.getTiles()[x+1][y+1].addTower(tower);
-            parentGrid.getTiles()[x][y+1].addTower(tower);
+        // check if near Tiles have a Tower TODO: Muss mit variabelen Towergrößen funktionieren!
+    
+        Tile tileRight = parentGrid.getTiles()[x + 1][y];
+        Tile tileCorner = parentGrid.getTiles()[x + 1][y + 1];
+        Tile tileBottom = parentGrid.getTiles()[x][y + 1];
+        
+        boolean spaceFree = tower == null && !tileRight.hasTower() && !tileCorner.hasTower() && !tileBottom.hasTower();
+        
+        if (spaceFree) {
+            tower = new Tower(type, x * Tile.SIZE, y * Tile.SIZE);
+            tileRight.addTower(tower);
+            tileCorner.addTower(tower);
+            tileBottom.addTower(tower);
             towerRoot = true;
-            GameMap.server.send(new BuildTower(tower.getType().towerTypeID, x, y));
+            
+            GameMap.server.send(new BuildTower(tower.type.towerTypeID, x, y));
         }
-
     }
-
+    
     public void addTower(Tower tower) {
         this.tower = tower;
         towerRoot = false;
     }
-
+    
     public void removeTower() {
         //TODO: Muss mit variabelen Towergrößen funktionieren!
-        if(this.tower!=null){
-            if(towerRoot){
-                this.tower = null;
-                parentGrid.getTiles()[x+1][y].removeTower();
-                parentGrid.getTiles()[x+1][y+1].removeTower();
-                parentGrid.getTiles()[x][y+1].removeTower();
+        if (tower != null) {
+            if (towerRoot) {
+                tower = null;
+                parentGrid.getTiles()[x + 1][y].removeTower();
+                parentGrid.getTiles()[x + 1][y + 1].removeTower();
+                parentGrid.getTiles()[x][y + 1].removeTower();
             }
             towerRoot = false;
         }
     }
-
-
-    public boolean hasTower(){
-        return tower!=null;
+    
+    public boolean hasTower() {
+        return tower != null;
     }
 }

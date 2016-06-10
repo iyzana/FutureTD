@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class FutureTD {
     public static void main(String... args) {
         log.info("Start time: " + ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        
         Client client = new Client();
         log.info("Client created");
         while(!client.isConnected()){
@@ -28,6 +29,8 @@ public class FutureTD {
             }
         }
         log.info("connected to Server");
-        new GameWindow(client);
+        GameWindow.client = client;
+        
+        new GameWindow();
     }
 }

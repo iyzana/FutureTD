@@ -15,13 +15,11 @@ public class GameMap {
     public final TileGrid grid;
     public static FutureTdServer server;
     
-    public GameMap(FutureTdServer server) {
-        this.server = server;
+    public GameMap() {
         grid = new TileGrid(500, 300);
     }
     
     public void update(double delta) {
-        
         grid.update(delta);
     }
 }

@@ -3,7 +3,6 @@ package com.jaregames.futuretd.client.network;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OptionalDataException;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -33,7 +32,7 @@ public class Client extends Thread {
         inputQueue = new LinkedList<>();
 
         sessionEnded = false;
-        this.start();
+        start();
     }
 
     @Override
@@ -51,11 +50,8 @@ public class Client extends Thread {
         }
 
         while (!sessionEnded) {
-            Object o = null;
             try {
                 inputQueue.add((Serializable) in.readObject());
-            }catch(OptionalDataException e){
-
             }catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

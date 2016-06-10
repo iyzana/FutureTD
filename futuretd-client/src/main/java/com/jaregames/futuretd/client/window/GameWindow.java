@@ -52,10 +52,8 @@ public class GameWindow extends Window {
     /**
      * Create a new window, display it and start the gameLoop
      */
-    public GameWindow(Client client) {
+    public GameWindow() {
         super();
-
-        this.client = client;
 
         keyboard = new Keyboard(); // Create keyboard input handler
         mouse = new Mouse(); // Create mouse input handler
@@ -227,6 +225,6 @@ public class GameWindow extends Window {
 
     public void handleBuildTower(BuildTower buildTower){
         log.debug("tower must be build!");
-        gameMap.grid.getTileAt(buildTower.posX, buildTower.posY).serverAddTower(TowerType.getTypeFromID(buildTower.towertypeID));
+        gameMap.grid.getTileAt(buildTower.posX, buildTower.posY).serverAddTower(TowerType.getTypeFromID(buildTower.towerTypeID));
     }
 }

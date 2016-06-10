@@ -11,11 +11,13 @@ import java.io.Serializable;
  */
 public class BuildTower implements Serializable{
     private static final long serialVersionUID = 1;
-    public int towertypeID;
-    public int posX;
-    public int posY;
-    public BuildTower(int towertypeID, int posX, int posY){
-        this.towertypeID = towertypeID;
+    
+    public final int towerTypeID;
+    public final int posX;
+    public final int posY;
+    
+    public BuildTower(int towerTypeID, int posX, int posY){
+        this.towerTypeID = towerTypeID;
         this.posX = posX;
         this.posY = posY;
     }

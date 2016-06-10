@@ -6,13 +6,12 @@ package com.jaregames.futuretd.server.tower;
 public enum TowerType {
     DEFAULT("Default", 2);
 
-    String name;
-    public int sizeInTiles;
-    public int towerTypeID;
+    public final int sizeInTiles;
+    public final int towerTypeID;
 
     TowerType(String name, int sizeInTiles) {
         this.sizeInTiles = sizeInTiles;
-        this.towerTypeID = ordinal();
+        towerTypeID = ordinal();
     }
 
     public static TowerType getTypeFromID(int id){

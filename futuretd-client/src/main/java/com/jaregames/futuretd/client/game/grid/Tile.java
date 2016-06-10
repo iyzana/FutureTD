@@ -67,7 +67,7 @@ public class Tile {
 //            towerRoot = true;
 //        }
 
-        GameWindow.client.send(new BuildTower(TowerType.DEFAULT.towerTypeID, this.x, this.y));
+        GameWindow.client.send(new BuildTower(TowerType.DEFAULT.towerTypeID, x, y));
 
     }
 
