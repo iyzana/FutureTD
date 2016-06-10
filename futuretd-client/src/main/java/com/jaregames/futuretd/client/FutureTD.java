@@ -23,7 +23,7 @@ public class FutureTD {
         log.info("Client created");
         while(!client.isConnected()){
             try {
-                Thread.sleep(2);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

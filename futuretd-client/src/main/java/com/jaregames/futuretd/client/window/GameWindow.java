@@ -186,7 +186,7 @@ public class GameWindow extends Window {
      */
     private boolean frame() {
         long diff = System.nanoTime() - gameTime;
-        if (diff > 4 * minFrameTime) gameTime += diff - 4 * minFrameTime;
+        if (diff > 4 * minFrameTime) gameTime = System.nanoTime() - minFrameTime;
         if (diff > 32 * minFrameTime) log.warn(diff / minFrameTime + " frames behind");
         boolean frame = diff > minFrameTime;
         if (frame) gameTime += minFrameTime;

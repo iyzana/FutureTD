@@ -32,6 +32,8 @@ public class Client extends Thread {
         inputQueue = new LinkedList<>();
 
         sessionEnded = false;
+        
+        setDaemon(true); // Exit when the application exits
         start();
     }
 

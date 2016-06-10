@@ -71,6 +71,7 @@ public class FutureTdServer extends Thread {
                 inputQueue.add((Serializable) in.readObject());
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
+                sessionEnded = true;
             }
         }
         
