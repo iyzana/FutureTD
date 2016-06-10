@@ -3,6 +3,7 @@ package com.jaregames.futuretd.client.network;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OptionalDataException;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -22,11 +23,13 @@ public class Client extends Thread {
 
     private Queue<Serializable> inputQueue;
 
+    private boolean connected;
+
     private Socket socketToServer;
     private boolean sessionEnded;
 
-    Client() {
-
+    public Client() {
+        connected = false;
         inputQueue = new LinkedList<>();
 
         sessionEnded = false;
@@ -36,9 +39,13 @@ public class Client extends Thread {
     @Override
     public void run() {
         try {
+            System.out.println("lets connect!!!");
             socketToServer = new Socket("localhost", 2960);
-            in = new ObjectInputStream(socketToServer.getInputStream());
+            System.out.println("connected");
             out = new ObjectOutputStream(socketToServer.getOutputStream());
+            out.flush();
+            in = new ObjectInputStream(socketToServer.getInputStream());
+            connected = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +54,9 @@ public class Client extends Thread {
             Object o = null;
             try {
                 inputQueue.add((Serializable) in.readObject());
-            } catch (IOException | ClassNotFoundException e) {
+            }catch(OptionalDataException e){
+
+            }catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -76,5 +85,9 @@ public class Client extends Thread {
 
     public static void main(String[] args) {
         new Client();
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 }

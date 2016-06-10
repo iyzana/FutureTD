@@ -1,5 +1,6 @@
 package com.jaregames.futuretd.client;
 
+import com.jaregames.futuretd.client.network.Client;
 import com.jaregames.futuretd.client.window.GameWindow;
 import lombok.extern.log4j.Log4j2;
 
@@ -17,7 +18,16 @@ import java.time.format.DateTimeFormatter;
 public class FutureTD {
     public static void main(String... args) {
         log.info("Start time: " + ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        
-        new GameWindow();
+        Client client = new Client();
+        log.info("Client created");
+        while(!client.isConnected()){
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        log.info("connected to Server");
+        new GameWindow(client);
     }
 }

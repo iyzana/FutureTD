@@ -4,6 +4,9 @@ import com.jaregames.futuretd.client.game.Camera;
 import com.jaregames.futuretd.client.game.GameMap;
 import com.jaregames.futuretd.client.input.Keyboard;
 import com.jaregames.futuretd.client.input.Mouse;
+import com.jaregames.futuretd.client.network.Client;
+import com.jaregames.futuretd.client.tower.TowerType;
+import com.jaregames.futuretd.server.communication.BuildTower;
 import lombok.extern.log4j.Log4j2;
 
 import java.awt.Color;
@@ -12,6 +15,7 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * Project: futuretd
@@ -26,7 +30,9 @@ public class GameWindow extends Window {
     private static final int minFrameTime = 1000000000 / prefFps;
     
     private boolean running; // If the game is running
-    
+
+    public static Client client = null;
+
     private final Keyboard keyboard; // Keyboard handler
     private final Mouse mouse; // Keyboard handler
     
@@ -34,6 +40,8 @@ public class GameWindow extends Window {
     private long gameTime; // time the game thinks currently is
     
     private double scale;
+
+    Queue inputQueue;
     
     private GameMap gameMap; // The map
     public static Camera camera; // The camera for maintaining the scrolling position
@@ -44,9 +52,11 @@ public class GameWindow extends Window {
     /**
      * Create a new window, display it and start the gameLoop
      */
-    public GameWindow() {
+    public GameWindow(Client client) {
         super();
-        
+
+        this.client = client;
+
         keyboard = new Keyboard(); // Create keyboard input handler
         mouse = new Mouse(); // Create mouse input handler
         
@@ -55,7 +65,7 @@ public class GameWindow extends Window {
         canvas.addMouseMotionListener(mouse); // Add mouse position handler
         canvas.addMouseWheelListener(mouse); // Add mouse wheel handler
         
-        enableFullscreen();
+        disableFullscreen();
         
         log.info("Window created");
         
@@ -104,11 +114,13 @@ public class GameWindow extends Window {
         renderingHints.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        
+
         // Set initial values for constant fps
         gameTime = System.nanoTime();
         lastUpdate = System.nanoTime();
         running = true;
+
+        inputQueue = client.getInputQueue();
         
         log.info("Starting game");
     }
@@ -127,7 +139,9 @@ public class GameWindow extends Window {
             toggleFullscreen();
             keyboard.setKeyReleased(KeyEvent.VK_F11);
         }
-        
+
+        checkInputQueue();
+
         gameMap.update(delta);
         
         if (Keyboard.keyDown(KeyEvent.VK_ESCAPE)) onClose(); // Quit game on press escape
@@ -197,5 +211,22 @@ public class GameWindow extends Window {
         log.info("Window close requested");
         
         running = false;
+    }
+
+    private void checkInputQueue(){
+        Object o = inputQueue.poll();
+        if(o == null){
+            return;
+        }
+        if(o instanceof BuildTower){
+            BuildTower buildTower = (BuildTower) o;
+            handleBuildTower(buildTower);
+        }
+
+    }
+
+    public void handleBuildTower(BuildTower buildTower){
+        log.debug("tower must be build!");
+        gameMap.grid.getTileAt(buildTower.posX, buildTower.posY).serverAddTower(TowerType.getTypeFromID(buildTower.towertypeID));
     }
 }

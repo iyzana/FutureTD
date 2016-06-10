@@ -29,12 +29,14 @@ public class FutureTdServer extends Thread {
     private Socket clientSocket;
 
     private boolean gameStart;
+    private boolean clientConnected;
     private boolean sessionEnded;
 
     private Queue<Serializable> inputQueue;
 
     FutureTdServer() {
         gameStart = false;
+        clientConnected = false;
         clientSocket = new Socket();
 
         inputQueue = new LinkedList<>();
@@ -52,13 +54,16 @@ public class FutureTdServer extends Thread {
         }
 
         ObjectInputStream in = null;
-        ObjectOutputStream out = null;
 
         try {
             clientSocket = serverSocket.accept();
-            System.out.println("Client connected!");
-            in = new ObjectInputStream(new ObjectInputStream(clientSocket.getInputStream()));
-            out = new ObjectOutputStream(new ObjectOutputStream(clientSocket.getOutputStream()));
+            log.info("Client connected!: "+clientSocket.getInetAddress());
+
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
+            out.flush();
+            in = new ObjectInputStream(clientSocket.getInputStream());
+            clientConnected = true;
+
         } catch (IOException e) {
             e.printStackTrace();
             sessionEnded = true;
@@ -94,8 +99,11 @@ public class FutureTdServer extends Thread {
         return inputQueue;
     }
 
-    public static void main(String[] args) {
-        new FutureTdServer();
+    public boolean isClientConnected() {
+        return clientConnected;
     }
 
+    public boolean isSessionEnded() {
+        return sessionEnded;
+    }
 }

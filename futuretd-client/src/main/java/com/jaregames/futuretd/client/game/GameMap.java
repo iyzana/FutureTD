@@ -18,21 +18,21 @@ import static com.jaregames.futuretd.client.window.GameWindow.camera;
  */
 public class GameMap {
     private final BufferedImage[][] mapInChunks;
-    private final TileGrid tileGrid;
+    public final TileGrid grid;
     
     public GameMap() {
         mapInChunks = ImageLoader.chunkify(ImageLoader.loadImage("chunkTest.png"), 6, 6);
         
-        tileGrid = new TileGrid(500, 300);
-        tileGrid.tiles[1][1].addTower(TowerType.DEFAULT);
-        tileGrid.tiles[8][12].addTower(TowerType.DEFAULT);
-        tileGrid.tiles[9][23].addTower(TowerType.DEFAULT);
+        grid = new TileGrid(500, 300);
+        grid.tiles[1][1].addTower(TowerType.DEFAULT);
+        grid.tiles[8][12].addTower(TowerType.DEFAULT);
+        grid.tiles[9][23].addTower(TowerType.DEFAULT);
     }
     
     public void update(double delta) {
         camera.update(delta);
         
-        tileGrid.update(delta);
+        grid.update(delta);
     }
     
     public void render(Graphics2D g) {
@@ -45,6 +45,6 @@ public class GameMap {
 //                g.drawRect(x, y, 1920 / 6, 1080 / 6);
 //            }
 //        }
-        tileGrid.render(g);
+        grid.render(g);
     }
 }

@@ -1,10 +1,6 @@
-package com.jaregames.futuretd.client.game.grid;
+package com.jaregames.futuretd.server.game.grid;
 
-import com.jaregames.futuretd.client.input.Mouse;
 
-import java.awt.Graphics2D;
-
-import static com.jaregames.futuretd.client.window.GameWindow.camera;
 
 /**
  * Created by René on 03.06.2016.
@@ -35,26 +31,6 @@ public class TileGrid {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 tiles[x][y].update(delta);
-            }
-        }
-    }
-    
-    /**
-     * renders only the Tiles wich are seen by the camera
-     *
-     * @param g
-     */
-    public void render(Graphics2D g) {
-        int offsetX = (int) camera.getX() / Tile.SIZE;
-        int offsetY = (int) camera.getY() / Tile.SIZE;
-        
-        g.drawString(offsetX + ", " + offsetY, 20, 20);
-        g.drawString("Mouse: X: " + Mouse.getX() + " Y: " + Mouse.getY(), 20, 30);
-        g.drawString("Camera: X: " + camera.getX() + " Y: " + camera.getY(), 20, 40);
-        
-        for (int x = Math.max(0, offsetX); x < Math.min(offsetX + maxTilesX, tiles.length); x++) {
-            for (int y = Math.max(0, offsetY); y < Math.min(offsetY + maxTilesY, tiles[0].length); y++) {
-                tiles[x][y].render(g);
             }
         }
     }
