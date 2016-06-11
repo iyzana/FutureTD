@@ -40,7 +40,7 @@ public class TileGrid {
     }
     
     /**
-     * renders only the Tiles wich are seen by the camera
+     * renders only the Tiles which are seen by the camera
      *
      * @param g
      */

@@ -2,6 +2,7 @@ package com.jaregames.futuretd.server;
 
 import com.jaregames.futuretd.server.communication.BuildTower;
 import com.jaregames.futuretd.server.game.GameMap;
+import com.jaregames.futuretd.server.game.grid.Tile;
 import com.jaregames.futuretd.server.tower.TowerType;
 import lombok.extern.log4j.Log4j2;
 
@@ -12,7 +13,7 @@ import java.util.Queue;
  */
 @Log4j2
 public class FutureTDServerManager {
-    private GameMap gameMap;
+    private GameMap map;
     private Queue inputQueue;
     private FutureTdServer server;
     
@@ -36,7 +37,7 @@ public class FutureTDServerManager {
     private void update() {
         double delta = delta(); // Get the time since the last frame in seconds
         
-        gameMap.update(delta);
+        map.update(delta);
         
         if (!server.isSessionEnded()) {
             checkInputQueue();
@@ -68,7 +69,7 @@ public class FutureTDServerManager {
         log.info("Initializing game");
         
         GameMap.server = server;
-        gameMap = new GameMap();
+        map = new GameMap();
         
         // Set initial values for constant fps
         gameTime = System.nanoTime();
@@ -114,8 +115,10 @@ public class FutureTDServerManager {
         }
     }
     
-    private void handleBuildTower(BuildTower buildTower) {
+    private void handleBuildTower(BuildTower tower) {
         log.info("Tower must be build!");
-        gameMap.grid.getTileAt(buildTower.posX, buildTower.posY).addTower(TowerType.getTypeFromID(buildTower.towerTypeID));
+        TowerType type = TowerType.getTypeFromID(tower.towerTypeID);
+        Tile tile = map.grid.getTileAt(tower.posX, tower.posY);
+        tile.addTower(type);
     }
 }

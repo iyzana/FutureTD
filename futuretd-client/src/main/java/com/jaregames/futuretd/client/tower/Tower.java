@@ -1,6 +1,8 @@
 package com.jaregames.futuretd.client.tower;
 
 
+import com.jaregames.futuretd.client.game.grid.Tile;
+
 import java.awt.Graphics2D;
 
 import static com.jaregames.futuretd.client.window.GameWindow.camera;
@@ -26,10 +28,10 @@ public class Tower {
     }
     
     private int renderX() {
-        return posX - (int) camera.getX();
+        return posX * Tile.SIZE - (int) camera.getX();
     }
     
     private int renderY() {
-        return posY - (int) camera.getY();
+        return posY * Tile.SIZE - (int) camera.getY();
     }
 }

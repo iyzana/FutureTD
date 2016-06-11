@@ -6,9 +6,6 @@ package com.jaregames.futuretd.server.game.grid;
  * Created by René on 03.06.2016.
  */
 public class TileGrid {
-    private static final int maxTilesX = 1920 / Tile.SIZE + 2;
-    private static final int maxTilesY = 1080 / Tile.SIZE + 2;
-    
     private final int width;
     private final int height;
     

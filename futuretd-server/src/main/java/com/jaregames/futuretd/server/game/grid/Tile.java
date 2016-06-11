@@ -10,14 +10,12 @@ import com.jaregames.futuretd.server.tower.TowerType;
  * Created by René on 03.06.2016.
  */
 public class Tile {
-    final static int SIZE = 25;
-    
     private final int x;
     private final int y;
     
     private Tower tower;
     private TileGrid parentGrid;
-    private boolean towerRoot;// if the tile ist the root tile for a tower
+    private boolean towerRoot; // if the tile is the root tile for a tower
     
     public Tile(int x, int y, TileGrid parentGrid) {
         this.x = x;
@@ -33,7 +31,7 @@ public class Tile {
     
     public void addTower(TowerType type) {
         // check if near Tiles have a Tower TODO: Muss mit variabelen Towergrößen funktionieren!
-    
+        
         Tile tileRight = parentGrid.getTiles()[x + 1][y];
         Tile tileCorner = parentGrid.getTiles()[x + 1][y + 1];
         Tile tileBottom = parentGrid.getTiles()[x][y + 1];
@@ -41,7 +39,7 @@ public class Tile {
         boolean spaceFree = tower == null && !tileRight.hasTower() && !tileCorner.hasTower() && !tileBottom.hasTower();
         
         if (spaceFree) {
-            tower = new Tower(type, x * Tile.SIZE, y * Tile.SIZE);
+            tower = new Tower(type, x, y);
             tileRight.addTower(tower);
             tileCorner.addTower(tower);
             tileBottom.addTower(tower);

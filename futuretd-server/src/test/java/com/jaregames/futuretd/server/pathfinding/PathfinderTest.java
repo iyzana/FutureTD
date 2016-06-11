@@ -10,7 +10,6 @@ import org.junit.Test;
  * @author Jannis
  */
 public class PathfinderTest {
-    
     @Test
     public void findPath() throws Exception {
         //        Thread.sleep(10000);

@@ -2,6 +2,7 @@ package com.jaregames.futuretd.client.window;
 
 import com.jaregames.futuretd.client.game.Camera;
 import com.jaregames.futuretd.client.game.GameMap;
+import com.jaregames.futuretd.client.game.grid.Tile;
 import com.jaregames.futuretd.client.input.Keyboard;
 import com.jaregames.futuretd.client.input.Mouse;
 import com.jaregames.futuretd.client.network.Client;
@@ -43,7 +44,7 @@ public class GameWindow extends Window {
 
     Queue inputQueue;
     
-    private GameMap gameMap; // The map
+    private GameMap map; // The map
     public static Camera camera; // The camera for maintaining the scrolling position
     private double fps;
     
@@ -99,7 +100,7 @@ public class GameWindow extends Window {
     private void init() {
         log.info("Initializing game");
         
-        gameMap = new GameMap();
+        map = new GameMap();
         camera = new Camera();
         
         // Set rendering technique to double buffered
@@ -140,7 +141,7 @@ public class GameWindow extends Window {
 
         checkInputQueue();
 
-        gameMap.update(delta);
+        map.update(delta);
         
         if (Keyboard.keyDown(KeyEvent.VK_ESCAPE)) onClose(); // Quit game on press escape
     }
@@ -158,7 +159,7 @@ public class GameWindow extends Window {
         
         // Render scene
         //g.fillRect(-(int) camera.getX(), -(int) camera.getY(), 100, 100);
-        gameMap.render(g);
+        map.render(g);
     
         g.setColor(Color.black);
         g.drawString((int) fps + " fps", 1860, 20);
@@ -223,8 +224,10 @@ public class GameWindow extends Window {
 
     }
 
-    public void handleBuildTower(BuildTower buildTower){
+    public void handleBuildTower(BuildTower tower){
         log.debug("tower must be build!");
-        gameMap.grid.getTileAt(buildTower.posX, buildTower.posY).serverAddTower(TowerType.getTypeFromID(buildTower.towerTypeID));
+        TowerType type = TowerType.getTypeFromID(tower.towerTypeID);
+        Tile tile = map.grid.getTileAt(tower.posX, tower.posY);
+        tile.serverAddTower(type);
     }
 }

@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
  * @author Jannis
  */
 public class Pathfinder {
-    
     private static ThreadLocal<Map<Node, Integer>> cachedDistances = new ThreadLocal<>();
     
     /**
@@ -59,8 +58,9 @@ public class Pathfinder {
         
         open.add(PathNode.of(start)); // Start searching from the start ode
         
-        int minDistance = (map.getWidth() + map.getHeight()) * 2; // Save the nearest we've come to the end so far
-        int maxDistance = minDistance / 20;
+        int maxPathLength = (map.getWidth() + map.getHeight()) * 2;
+        int minDistance = maxPathLength; // Save the nearest we've come to the end so far
+        int maxDistanceFactor = maxPathLength / 20;
         
         while (!open.isEmpty()) { // While nodes to check are available
             PathNode current = open.poll();
@@ -70,7 +70,7 @@ public class Pathfinder {
             
             int distance = distanceToAny(current, ends); // Get the distance to the current node
             if (distance < minDistance) minDistance = distance; // Alter min distance if necessary
-            else if (distance > minDistance * maxDistance) // If distance is far greater stop searching
+            else if (distance > minDistance * maxDistanceFactor) // If distance is far greater stop searching
                 throw new NoPathFoundException("No easy path between start and end");
             
             neighbors(map, current).stream() // Build the neighbors

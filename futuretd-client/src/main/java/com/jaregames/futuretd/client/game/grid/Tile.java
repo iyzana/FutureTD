@@ -16,14 +16,14 @@ import static com.jaregames.futuretd.client.window.GameWindow.camera;
  * Created by René on 03.06.2016.
  */
 public class Tile {
-    final static int SIZE = 25;
+    public final static int SIZE = 25;
 
     private final int x;
     private final int y;
 
     private Tower tower;
     private TileGrid parentGrid;
-    private boolean towerRoot;// if the tile ist the root tile for a tower
+    private boolean towerRoot;// if the tile is the root tile for a tower
     
     public Tile(int x, int y, TileGrid parentGrid) {
         this.x = x;
@@ -72,7 +72,7 @@ public class Tile {
     }
 
     public void serverAddTower(TowerType type){
-        tower = new Tower(type, x* Tile.SIZE, y* Tile.SIZE);
+        tower = new Tower(type, x, y);
     }
 
     public void addTower(Tower tower) {
