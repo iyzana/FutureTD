@@ -22,7 +22,6 @@
         <module name="futuretd-client" />
         <module name="futuretd-client_main" />
         <module name="futuretd-client_test" />
-        <module name="futuretd-server" />
         <module name="futuretd-server_main" />
         <module name="futuretd-server_test" />
       </profile>

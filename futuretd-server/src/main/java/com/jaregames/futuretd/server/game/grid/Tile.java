@@ -28,10 +28,10 @@ public class Tile {
         
     }
     
-    
     public void addTower(TowerType type) {
         // check if near Tiles have a Tower TODO: Muss mit variabelen Towergrößen funktionieren!
         
+        // FIXME: ArrayIndexOutOfBoundsException if placed in illegal position at bottom or right
         Tile tileRight = parentGrid.getTiles()[x + 1][y];
         Tile tileCorner = parentGrid.getTiles()[x + 1][y + 1];
         Tile tileBottom = parentGrid.getTiles()[x][y + 1];
@@ -56,6 +56,7 @@ public class Tile {
     
     public void removeTower() {
         //TODO: Muss mit variabelen Towergrößen funktionieren!
+        // TODO: Needs to be checked by server
         if (tower != null) {
             if (towerRoot) {
                 tower = null;

@@ -32,7 +32,7 @@ public class GameWindow extends Window {
     
     private boolean running; // If the game is running
 
-    public static Client client = null;
+    public static Client client;
 
     private final Keyboard keyboard; // Keyboard handler
     private final Mouse mouse; // Keyboard handler

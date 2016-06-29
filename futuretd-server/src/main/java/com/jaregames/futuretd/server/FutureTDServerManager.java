@@ -24,7 +24,7 @@ public class FutureTDServerManager {
     private long lastUpdate; // time when the game was last updated
     private boolean running;
     
-    private FutureTDServerManager() {
+    public FutureTDServerManager() {
         log.info("Waiting for client...");
         establishConnection();
         gameLoop();
