@@ -35,20 +35,20 @@ public class ImageLoader {
      * Splits the image into chunks determined by the rows and columns
      *
      * @param image   image to split
-     * @param rows
-     * @param columns
-     * @return
+     * @param rows rows to split image into
+     * @param columns columns to split image into
+     * @return Array of spliited images of size rows x columns
      */
     public static BufferedImage[][] chunkify(BufferedImage image, int rows, int columns) {
         int chunkWidth = image.getWidth() / columns; // determines the chunk width and height
         int chunkHeight = image.getHeight() / rows;
         
-        BufferedImage imgs[][] = new BufferedImage[rows][columns]; //Image array to hold image chunks
+        BufferedImage images[][] = new BufferedImage[rows][columns]; //Image array to hold image chunks
         for (int x = 0; x < rows; x++) {
             for (int y = 0; y < columns; y++) {
-                imgs[x][y] = image.getSubimage(chunkWidth * x, chunkHeight * y, chunkWidth, chunkHeight);
+                images[x][y] = image.getSubimage(chunkWidth * x, chunkHeight * y, chunkWidth, chunkHeight);
             }
         }
-        return imgs;
+        return images;
     }
 }

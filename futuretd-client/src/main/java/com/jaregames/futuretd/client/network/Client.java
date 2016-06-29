@@ -20,7 +20,7 @@ public class Client extends Thread {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
-    private Queue<Serializable> inputQueue;
+    private final Queue<Serializable> inputQueue;
 
     private boolean connected;
 

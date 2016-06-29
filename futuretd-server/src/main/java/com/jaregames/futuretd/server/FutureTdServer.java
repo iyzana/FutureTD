@@ -32,7 +32,7 @@ public class FutureTdServer extends Thread {
     private boolean clientConnected;
     private boolean sessionEnded;
     
-    private Queue<Serializable> inputQueue;
+    private final Queue<Serializable> inputQueue;
     
     FutureTdServer() {
         gameStart = false;

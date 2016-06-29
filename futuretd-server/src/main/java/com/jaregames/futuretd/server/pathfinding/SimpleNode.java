@@ -17,12 +17,12 @@ class SimpleNode implements Node {
     private final int y;
     
     /**
-     * A node representing data neccesarry for a* pathfinding
+     * A node representing data necessary for a* pathfinding
      *
      * @param x      The nodes x coordinate
-     * @param y      The nodes y coordinat
+     * @param y      The nodes y coordinate
      */
-    protected SimpleNode(int x, int y) {
+    SimpleNode(int x, int y) {
         this.x = x;
         this.y = y;
     }

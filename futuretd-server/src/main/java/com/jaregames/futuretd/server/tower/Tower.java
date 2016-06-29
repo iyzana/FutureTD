@@ -1,8 +1,10 @@
 package com.jaregames.futuretd.server.tower;
 
 
+import java.awt.Graphics2D;
+
 public class Tower {
-    public final TowerType type;
+    protected final TowerType type;
     
     public final int posX;
     public final int posY;
@@ -15,5 +17,9 @@ public class Tower {
     
     public void update(double delta) {
         
+    }
+    
+    public void render(Graphics2D g) {
+        throw new UnsupportedOperationException("Server mustn't render");
     }
 }

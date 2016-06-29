@@ -1,6 +1,7 @@
 package com.jaregames.futuretd.server.pathfinding;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  * @author Jannis
  */
 public class Pathfinder {
-    private static ThreadLocal<Map<Node, Integer>> cachedDistances = new ThreadLocal<>();
+    private static final ThreadLocal<Map<Node, Integer>> cachedDistances = new ThreadLocal<>();
     
     /**
      * Finds a path on the map from the node start to node end.
@@ -47,7 +48,7 @@ public class Pathfinder {
      * @throws NoPathFoundException If a path cannot be found or cannot be found in a reasonable amount of time
      */
     public static List<Node> findPath(TiledMap map, Node start, List<Node> ends) throws NoPathFoundException {
-        cachedDistances.set(null); // Reset the cache from last pathfinding
+        cachedDistances.set(null); // Reset the cache from last pathfind
         
         if (ends.isEmpty()) throw new NoPathFoundException("No end points supplied");
         if (!(ends.get(0) instanceof SimpleNode))
@@ -99,7 +100,7 @@ public class Pathfinder {
      * @param ends The ends
      * @return The shortest distance to the nearest end from ends
      */
-    private static int distanceToAny(Node node, List<Node> ends) {
+    private static int distanceToAny(Node node, Collection<Node> ends) {
         Map<Node, Integer> cache = cachedDistances.get(); // Get cache for current thread
         if (cache == null) cachedDistances.set(cache = new HashMap<>());
         if (!cache.containsKey(node)) {
@@ -140,7 +141,7 @@ public class Pathfinder {
      * <li>The node is either
      * <ul>
      * <li>directly adjacent</li>
-     * <li>or not blocked by non transversable nodes</li>
+     * <li>or not blocked by non traversable nodes</li>
      * </ul>
      * </li>
      * </ul>
@@ -149,8 +150,8 @@ public class Pathfinder {
      * @param node The node to build neighbors for
      * @return The nodes 8 filtered neighbors
      */
-    private static List<PathNode> neighbors(TiledMap map, PathNode node) {
-        List<PathNode> neighbors = new ArrayList<>(9);
+    private static Collection<PathNode> neighbors(TiledMap map, PathNode node) {
+        Collection<PathNode> neighbors = new ArrayList<>(9);
         
         int x = node.getX();
         int y = node.getY();

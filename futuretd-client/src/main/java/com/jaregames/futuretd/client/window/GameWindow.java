@@ -6,8 +6,8 @@ import com.jaregames.futuretd.client.game.grid.Tile;
 import com.jaregames.futuretd.client.input.Keyboard;
 import com.jaregames.futuretd.client.input.Mouse;
 import com.jaregames.futuretd.client.network.Client;
-import com.jaregames.futuretd.client.tower.TowerType;
 import com.jaregames.futuretd.server.communication.BuildTower;
+import com.jaregames.futuretd.server.tower.TowerType;
 import lombok.extern.log4j.Log4j2;
 
 import java.awt.Color;
@@ -228,6 +228,6 @@ public class GameWindow extends Window {
         log.debug("tower must be build!");
         TowerType type = TowerType.getTypeFromID(tower.towerTypeID);
         Tile tile = map.grid.getTileAt(tower.posX, tower.posY);
-        tile.serverAddTower(type);
+        tile.addTower(type);
     }
 }

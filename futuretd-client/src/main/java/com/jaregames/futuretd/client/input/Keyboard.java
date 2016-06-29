@@ -111,7 +111,7 @@ public class Keyboard implements KeyListener {
         setKeyPressed(e.getKeyCode());
     }
     
-    public synchronized void setKeyPressed(int keyCode) {
+    private synchronized void setKeyPressed(int keyCode) {
         if (keyCode >= 0 && keyCode < KEY_COUNT)
             currentKeys[keyCode] = true;
     }

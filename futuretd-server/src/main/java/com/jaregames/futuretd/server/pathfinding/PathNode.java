@@ -13,14 +13,14 @@ import lombok.Getter;
  */
 @Getter
 class PathNode extends SimpleNode {
-    private PathNode parent;
+    private final PathNode parent;
     private float steps = -1;
     
     /**
-     * A node representing data neccesarry for a* pathfinding
+     * A node representing data necessary for a* pathfinding
      *
      * @param x      The nodes x coordinate
-     * @param y      The nodes y coordinat
+     * @param y      The nodes y coordinate
      * @param parent The nodes parent or predecessor
      */
     private PathNode(int x, int y, PathNode parent) {

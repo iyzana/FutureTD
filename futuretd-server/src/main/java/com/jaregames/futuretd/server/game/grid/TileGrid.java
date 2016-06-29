@@ -1,22 +1,28 @@
 package com.jaregames.futuretd.server.game.grid;
 
 
+import com.jaregames.futuretd.server.pathfinding.TiledMap;
+import com.jaregames.futuretd.server.pathfinding.TraversableNode;
 
 /**
  * Created by René on 03.06.2016.
  */
-public class TileGrid {
-    private final int width;
-    private final int height;
+public class TileGrid implements TiledMap {
+    protected final int width;
+    protected final int height;
     
-    public final Tile[][] tiles;
+    public Tile[][] tiles;
     
     public TileGrid(int width, int height) {
         this.width = width;
         this.height = height;
         
+        initTiles();
+    }
+    
+    protected void initTiles() {
         tiles = new Tile[width][height];
-        
+    
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
                 tiles[i][j] = new Tile(i, j, this);
@@ -38,5 +44,20 @@ public class TileGrid {
 
     public Tile[][] getTiles() {
         return tiles;
+    }
+    
+    @Override
+    public TraversableNode getNodeAt(int x, int y) {
+        return getTileAt(x, y);
+    }
+    
+    @Override
+    public int getWidth() {
+        return width;
+    }
+    
+    @Override
+    public int getHeight() {
+        return height;
     }
 }

@@ -1,22 +1,22 @@
 package com.jaregames.futuretd.client.tower;
 
 
+import com.jaregames.futuretd.client.assets.ImageLoader;
 import com.jaregames.futuretd.client.game.grid.Tile;
+import com.jaregames.futuretd.server.tower.TowerType;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import static com.jaregames.futuretd.client.window.GameWindow.camera;
 
-public class Tower {
-    public final TowerType type;
-    
-    public final int posX;
-    public final int posY;
+public class Tower extends com.jaregames.futuretd.server.tower.Tower {
+    private BufferedImage image;
     
     public Tower(TowerType type, int posX, int posY) {
-        this.type = type;
-        this.posX = posX;
-        this.posY = posY;
+        super(type, posX,posY);
+    
+        image = ImageLoader.loadImage(type.name + "TowerBase.png");
     }
     
     public void update(double delta) {
@@ -24,7 +24,7 @@ public class Tower {
     }
     
     public void render(Graphics2D g2d) {
-        g2d.drawImage(type.baseImg, renderX(), renderY(), null);
+        g2d.drawImage(image, renderX(), renderY(), null);
     }
     
     private int renderX() {

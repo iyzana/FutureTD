@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author René
  */
 public class PlayerInformation implements Serializable {
-    String nickname;
+    final String nickname;
 
     PlayerInformation(String nickname){
         this.nickname = nickname;

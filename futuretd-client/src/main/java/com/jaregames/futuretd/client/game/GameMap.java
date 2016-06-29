@@ -2,7 +2,7 @@ package com.jaregames.futuretd.client.game;
 
 import com.jaregames.futuretd.client.assets.ImageLoader;
 import com.jaregames.futuretd.client.game.grid.TileGrid;
-import com.jaregames.futuretd.client.tower.TowerType;
+import com.jaregames.futuretd.server.tower.TowerType;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

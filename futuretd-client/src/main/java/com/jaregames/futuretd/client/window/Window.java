@@ -1,8 +1,8 @@
 package com.jaregames.futuretd.client.window;
 
-import com.jaregames.futuretd.client.helper.ComponentListenerResizeHelper;
-import com.jaregames.futuretd.client.helper.MouseListenerEnteredHelper;
-import com.jaregames.futuretd.client.helper.WindowClosingListener;
+import com.jaregames.futuretd.client.window.swinghelper.ComponentListenerResizeHelper;
+import com.jaregames.futuretd.client.window.swinghelper.MouseListenerEnteredHelper;
+import com.jaregames.futuretd.client.window.swinghelper.WindowClosingListener;
 import lombok.extern.log4j.Log4j2;
 
 import javax.swing.JFrame;

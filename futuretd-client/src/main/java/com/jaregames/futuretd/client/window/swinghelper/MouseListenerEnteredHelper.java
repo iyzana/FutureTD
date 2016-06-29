@@ -1,4 +1,4 @@
-package com.jaregames.futuretd.client.helper;
+package com.jaregames.futuretd.client.window.swinghelper;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

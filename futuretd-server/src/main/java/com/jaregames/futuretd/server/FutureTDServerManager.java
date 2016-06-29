@@ -119,6 +119,9 @@ public class FutureTDServerManager {
         log.info("Tower must be build!");
         TowerType type = TowerType.getTypeFromID(tower.towerTypeID);
         Tile tile = map.grid.getTileAt(tower.posX, tower.posY);
-        tile.addTower(type);
+        boolean success = tile.addTower(type);
+        
+        if (success)
+            GameMap.server.send(new BuildTower(type.towerTypeID, tower.posX, tower.posY));
     }
 }

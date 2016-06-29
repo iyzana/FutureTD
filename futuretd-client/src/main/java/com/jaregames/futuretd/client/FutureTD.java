@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
  * @author René
  */
 @Log4j2
-public class FutureTD {
+class FutureTD {
     public static void main(String... args) {
         log.info("Start time: " + ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME));
         
